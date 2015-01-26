@@ -11,7 +11,7 @@ namespace Microsoft.AspNet.Mvc.Core
             = new ResourceManager("Microsoft.AspNet.Mvc.Core.Resources", typeof(Resources).GetTypeInfo().Assembly);
 
         /// <summary>
-        /// The argument '{0}' is invalid. Media types containing wildcards (*) are not supported.
+        /// The argument '{0}' is invalid. Media types which match all types or match all subtypes are not supported.
         /// </summary>
         internal static string MatchAllContentTypeIsNotAllowed
         {
@@ -19,7 +19,7 @@ namespace Microsoft.AspNet.Mvc.Core
         }
 
         /// <summary>
-        /// The argument '{0}' is invalid. Media types containing wildcards (*) are not supported.
+        /// The argument '{0}' is invalid. Media types which match all types or match all subtypes are not supported.
         /// </summary>
         internal static string FormatMatchAllContentTypeIsNotAllowed(object p0)
         {
@@ -27,7 +27,7 @@ namespace Microsoft.AspNet.Mvc.Core
         }
 
         /// <summary>
-        /// The content-type '{0}' added in the '{1}' property is invalid. Media types containing wildcards (*) are not supported.
+        /// The content-type '{0}' added in the '{1}' property is invalid. Media types which match all types or match all subtypes are not supported.
         /// </summary>
         internal static string ObjectResult_MatchAllContentType
         {
@@ -35,7 +35,7 @@ namespace Microsoft.AspNet.Mvc.Core
         }
 
         /// <summary>
-        /// The content-type '{0}' added in the '{1}' property is invalid. Media types containing wildcards (*) are not supported.
+        /// The content-type '{0}' added in the '{1}' property is invalid. Media types which match all types or match all subtypes are not supported.
         /// </summary>
         internal static string FormatObjectResult_MatchAllContentType(object p0, object p1)
         {
@@ -560,24 +560,6 @@ namespace Microsoft.AspNet.Mvc.Core
         internal static string Common_ValueNotValidForProperty
         {
             get { return GetString("Common_ValueNotValidForProperty"); }
-        }
-
-        /// <summary>
-        /// The media type "{0}" is not valid. MediaTypes containing wildcards (*) are not allowed in formatter 
-        /// mappings.
-        /// </summary>
-        internal static string FormatterMappings_NotValidMediaType
-        {
-            get { return GetString("FormatterMappings_NotValidMediaType"); }
-        }
-
-        /// <summary>
-        /// The format provided is invalid '{0}'. A format must be a non-empty file-extension, optionally prefixed 
-        /// with a '.' character.
-        /// </summary>
-        internal static string Format_NotValid
-        {
-            get { return GetString("Format_NotValid"); }
         }
 
         /// <summary>
@@ -1613,134 +1595,6 @@ namespace Microsoft.AspNet.Mvc.Core
         }
 
         /// <summary>
-        /// Body
-        /// </summary>
-        internal static string ApiParameterSource_Body
-        {
-            get { return GetString("ApiParameterSource_Body"); }
-        }
-
-        /// <summary>
-        /// Body
-        /// </summary>
-        internal static string FormatApiParameterSource_Body()
-        {
-            return GetString("ApiParameterSource_Body");
-        }
-
-        /// <summary>
-        /// Custom
-        /// </summary>
-        internal static string ApiParameterSource_Custom
-        {
-            get { return GetString("ApiParameterSource_Custom"); }
-        }
-
-        /// <summary>
-        /// Custom
-        /// </summary>
-        internal static string FormatApiParameterSource_Custom()
-        {
-            return GetString("ApiParameterSource_Custom");
-        }
-
-        /// <summary>
-        /// Header
-        /// </summary>
-        internal static string ApiParameterSource_Header
-        {
-            get { return GetString("ApiParameterSource_Header"); }
-        }
-
-        /// <summary>
-        /// Header
-        /// </summary>
-        internal static string FormatApiParameterSource_Header()
-        {
-            return GetString("ApiParameterSource_Header");
-        }
-
-        /// <summary>
-        /// Hidden
-        /// </summary>
-        internal static string ApiParameterSource_Hidden
-        {
-            get { return GetString("ApiParameterSource_Hidden"); }
-        }
-
-        /// <summary>
-        /// Hidden
-        /// </summary>
-        internal static string FormatApiParameterSource_Hidden()
-        {
-            return GetString("ApiParameterSource_Hidden");
-        }
-
-        /// <summary>
-        /// ModelBinding
-        /// </summary>
-        internal static string ApiParameterSource_ModelBinding
-        {
-            get { return GetString("ApiParameterSource_ModelBinding"); }
-        }
-
-        /// <summary>
-        /// ModelBinding
-        /// </summary>
-        internal static string FormatApiParameterSource_ModelBinding()
-        {
-            return GetString("ApiParameterSource_ModelBinding");
-        }
-
-        /// <summary>
-        /// Path
-        /// </summary>
-        internal static string ApiParameterSource_Path
-        {
-            get { return GetString("ApiParameterSource_Path"); }
-        }
-
-        /// <summary>
-        /// Path
-        /// </summary>
-        internal static string FormatApiParameterSource_Path()
-        {
-            return GetString("ApiParameterSource_Path");
-        }
-
-        /// <summary>
-        /// Query
-        /// </summary>
-        internal static string ApiParameterSource_Query
-        {
-            get { return GetString("ApiParameterSource_Query"); }
-        }
-
-        /// <summary>
-        /// Query
-        /// </summary>
-        internal static string FormatApiParameterSource_Query()
-        {
-            return GetString("ApiParameterSource_Query");
-        }
-
-        /// <summary>
-        /// Form
-        /// </summary>
-        internal static string ApiParameterSource_Form
-        {
-            get { return GetString("ApiParameterSource_Form"); }
-        }
-
-        /// <summary>
-        /// Form
-        /// </summary>
-        internal static string FormatApiParameterSource_Form()
-        {
-            return GetString("ApiParameterSource_Form");
-        }
-
-        /// <summary>
         /// The action '{0}' has ApiExplorer enabled, but is using conventional routing. Only actions which use attribute routing support ApiExplorer.
         /// </summary>
         internal static string ApiExplorer_UnsupportedAction
@@ -1754,6 +1608,38 @@ namespace Microsoft.AspNet.Mvc.Core
         internal static string FormatApiExplorer_UnsupportedAction(object p0)
         {
             return string.Format(CultureInfo.CurrentCulture, GetString("ApiExplorer_UnsupportedAction"), p0);
+        }
+
+        /// <summary>
+        /// The media type "{0}" is not valid. MediaTypes containing wildcards (*) are not allowed in formatter mappings.
+        /// </summary>
+        internal static string FormatterMappings_NotValidMediaType
+        {
+            get { return GetString("FormatterMappings_NotValidMediaType"); }
+        }
+
+        /// <summary>
+        /// The media type "{0}" is not valid. MediaTypes containing wildcards (*) are not allowed in formatter mappings.
+        /// </summary>
+        internal static string FormatFormatterMappings_NotValidMediaType(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("FormatterMappings_NotValidMediaType"), p0);
+        }
+
+        /// <summary>
+        /// The format provided is invalid '{0}'. A format must be a non-empty file-extension, optionally prefixed with a '.' character.
+        /// </summary>
+        internal static string Format_NotValid
+        {
+            get { return GetString("Format_NotValid"); }
+        }
+
+        /// <summary>
+        /// The format provided is invalid '{0}'. A format must be a non-empty file-extension, optionally prefixed with a '.' character.
+        /// </summary>
+        internal static string FormatFormat_NotValid(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("Format_NotValid"), p0);
         }
 
         /// <summary>
