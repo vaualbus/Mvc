@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.ApplicationModels;
 using Microsoft.AspNet.Routing;
-using Microsoft.AspNet.Security;
 using Microsoft.Framework.ConfigurationModel;
 
 namespace Microsoft.Framework.DependencyInjection
@@ -17,6 +14,21 @@ namespace Microsoft.Framework.DependencyInjection
         {
             ConfigureDefaultServices(services, configuration);
             services.TryAdd(MvcServices.GetDefaultServices(configuration));
+            return services;
+        }
+
+        /// <summary>
+        /// Adds services that allows controllers to be activated from the application's <see cref="System.IServiceProvider"/>.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="configuration">The applications <see cref="IConfiguration"/>.</param>
+        /// <returns>The <see cref="IServiceCollection"/>.</returns>
+        public static IServiceCollection WithControllersFromServiceProvider(
+            [NotNull] this IServiceCollection services,
+            IConfiguration configuration = null)
+        {
+            var describer = new ServiceDescriber(configuration);
+            services.Add(describer.Transient<IControllerActivator, ServiceBasedControllerActivator>());
             return services;
         }
 

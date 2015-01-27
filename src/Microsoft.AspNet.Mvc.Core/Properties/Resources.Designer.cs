@@ -1706,6 +1706,22 @@ namespace Microsoft.AspNet.Mvc.Core
             return string.Format(CultureInfo.CurrentCulture, GetString("ApiExplorer_UnsupportedAction"), p0);
         }
 
+        /// <summary>
+        /// Property '{0}' on controller '{1}' cannot be activated.
+        /// </summary>
+        internal static string ControllerFactory_PropertyCannotBeActivated
+        {
+            get { return GetString("ControllerFactory_PropertyCannotBeActivated"); }
+        }
+
+        /// <summary>
+        /// Property '{0}' on controller '{1}' cannot be activated.
+        /// </summary>
+        internal static string FormatControllerFactory_PropertyCannotBeActivated(object p0, object p1)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ControllerFactory_PropertyCannotBeActivated"), p0, p1);
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);

@@ -445,4 +445,7 @@
   <data name="ApiExplorer_UnsupportedAction" xml:space="preserve">
     <value>The action '{0}' has ApiExplorer enabled, but is using conventional routing. Only actions which use attribute routing support ApiExplorer.</value>
   </data>
+  <data name="ControllerFactory_PropertyCannotBeActivated" xml:space="preserve">
+    <value>Property '{0}' on controller '{1}' cannot be activated.</value>
+  </data>
 </root>

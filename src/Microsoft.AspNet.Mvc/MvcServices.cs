@@ -44,8 +44,8 @@ namespace Microsoft.AspNet.Mvc
             yield return describe.Transient<IControllerModelBuilder, DefaultControllerModelBuilder>();
             yield return describe.Transient<IActionModelBuilder, DefaultActionModelBuilder>();
 
-            // This accesses per-request services to activate the controller
-            yield return describe.Transient<IControllerFactory, DefaultControllerFactory>();
+            // This has a cache, so it needs to be a singleton
+            yield return describe.Singleton<IControllerFactory, DefaultControllerFactory>();
 
             // This has a cache, so it needs to be a singleton
             yield return describe.Singleton<IControllerActivator, DefaultControllerActivator>();
