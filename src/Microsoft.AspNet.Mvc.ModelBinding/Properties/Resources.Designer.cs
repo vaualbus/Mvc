@@ -458,6 +458,22 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             return string.Format(CultureInfo.CurrentCulture, GetString("BinderType_MustBeIModelBinderOrIModelBinderProvider"), p0, p1, p2);
         }
 
+        /// <summary>
+        /// The value '{0}' is not valid for {1}.
+        /// </summary>
+        internal static string ModelBinderUtil_ValueInvalid
+        {
+            get { return GetString("ModelBinderUtil_ValueInvalid"); }
+        }
+
+        /// <summary>
+        /// The value '{0}' is not valid for {1}.
+        /// </summary>
+        internal static string FormatModelBinderUtil_ValueInvalid(object p0, object p1)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ModelBinderUtil_ValueInvalid"), p0, p1);
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);

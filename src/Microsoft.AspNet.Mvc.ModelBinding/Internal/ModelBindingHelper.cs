@@ -100,7 +100,20 @@ namespace Microsoft.AspNet.Mvc.ModelBinding.Internal
         {
             if (IsFormatException(ex))
             {
-                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, ex.Message);
+                var modelState = bindingContext.ModelState[bindingContext.ModelName];
+                if (modelState == null)
+                {
+                    bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, ex.Message);
+                }
+                else
+                {
+                    // Convert FormatExceptions to Invalid value messages.
+                    var errorMessage = Resources.FormatModelBinderUtil_ValueInvalid(
+                        modelState.Value.AttemptedValue,
+                        bindingContext.ModelName);
+
+                    bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, errorMessage);
+                }
             }
             else
             {

@@ -201,4 +201,7 @@
   <data name="BinderType_MustBeIModelBinderOrIModelBinderProvider" xml:space="preserve">
     <value>The type '{0}' must implement either '{1}' or '{2}' to be used as a model binder.</value>
   </data>
+  <data name="ModelBinderUtil_ValueInvalid" xml:space="preserve">
+    <value>The value '{0}' is not valid for {1}.</value>
+  </data>
 </root>
