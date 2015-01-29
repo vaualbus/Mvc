@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,29 @@ namespace MvcSample.Web
     {
         private static readonly IEnumerable<SelectListItem> _addresses = CreateAddresses();
         private static readonly IEnumerable<SelectListItem> _ages = CreateAges();
+
+        public class Person
+        {
+            [Required]
+            [StringLength(3)]
+            public string Name { get; set; }
+        }
+
+        public void Test4(Person p, Person p1)
+        {
+        }
+
+        public void Test([Range(1,100)]int i, [Required]Person p)
+        {
+        }
+
+        public void Test2([FromBody][Range(1, 100)]int i)
+        {
+        }
+
+        public void Test3([FromBody][Required]Person p)
+        {
+        }
 
         public ActionResult Index()
         {

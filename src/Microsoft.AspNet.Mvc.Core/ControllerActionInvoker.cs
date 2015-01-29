@@ -27,6 +27,7 @@ namespace Microsoft.AspNet.Mvc
             [NotNull] IModelBinderProvider modelBinderProvider,
             [NotNull] IModelValidatorProviderProvider modelValidatorProviderProvider,
             [NotNull] IValueProviderFactoryProvider valueProviderFactoryProvider,
+            [NotNull] IValidationExcludeFiltersProvider validationExcludeFiltersProvider,
             [NotNull] IScopedInstance<ActionBindingContext> actionBindingContextAccessor)
             : base(
                   actionContext, 
@@ -35,7 +36,8 @@ namespace Microsoft.AspNet.Mvc
                   modelBinderProvider, 
                   modelValidatorProviderProvider, 
                   valueProviderFactoryProvider,
-                  actionBindingContextAccessor)
+                  actionBindingContextAccessor,
+                  validationExcludeFiltersProvider)
         {
             _descriptor = descriptor;
             _controllerFactory = controllerFactory;

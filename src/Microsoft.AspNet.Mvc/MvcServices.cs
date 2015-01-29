@@ -90,7 +90,6 @@ namespace Microsoft.AspNet.Mvc
             yield return describe.Instance<JsonOutputFormatter>(new JsonOutputFormatter());
 
             yield return describe.Transient<IModelValidatorProviderProvider, DefaultModelValidatorProviderProvider>();
-            yield return describe.Transient<IBodyModelValidator, DefaultBodyModelValidator>();
             yield return describe.Transient<IValidationExcludeFiltersProvider,
                 DefaultValidationExcludeFiltersProvider>();
 

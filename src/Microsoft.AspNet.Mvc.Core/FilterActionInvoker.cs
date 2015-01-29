@@ -21,6 +21,7 @@ namespace Microsoft.AspNet.Mvc
         private readonly IModelValidatorProviderProvider _modelValidatorProviderProvider;
         private readonly IValueProviderFactoryProvider _valueProviderFactoryProvider;
         private readonly IScopedInstance<ActionBindingContext> _actionBindingContextAccessor;
+        private readonly IValidationExcludeFiltersProvider _validationExcludeFiltersProvider;
 
         private IFilter[] _filters;
         private FilterCursor _cursor;
@@ -45,7 +46,8 @@ namespace Microsoft.AspNet.Mvc
             [NotNull] IModelBinderProvider modelBinderProvider,
             [NotNull] IModelValidatorProviderProvider modelValidatorProviderProvider,
             [NotNull] IValueProviderFactoryProvider valueProviderFactoryProvider,
-            [NotNull] IScopedInstance<ActionBindingContext> actionBindingContextAccessor)
+            [NotNull] IScopedInstance<ActionBindingContext> actionBindingContextAccessor,
+            [NotNull] IValidationExcludeFiltersProvider validationExcludeFiltersProvider)
         {
             ActionContext = actionContext;
 
@@ -55,6 +57,7 @@ namespace Microsoft.AspNet.Mvc
             _modelValidatorProviderProvider = modelValidatorProviderProvider;
             _valueProviderFactoryProvider = valueProviderFactoryProvider;
             _actionBindingContextAccessor = actionBindingContextAccessor;
+            _validationExcludeFiltersProvider = validationExcludeFiltersProvider;
         }
 
         protected ActionContext ActionContext { get; private set; }
@@ -200,7 +203,8 @@ namespace Microsoft.AspNet.Mvc
 
             context.InputFormatters = new List<IInputFormatter>(_inputFormatterProvider.InputFormatters);
             context.ModelBinders = new List<IModelBinder>(_modelBinderProvider.ModelBinders);
-
+            context.ExclusionFilters = new List<IExcludeTypeValidationFilter>(
+                _validationExcludeFiltersProvider.ExcludeFilters);
             context.ValidatorProviders = new List<IModelValidatorProvider>(
                 _modelValidatorProviderProvider.ModelValidatorProviders);
 
@@ -412,7 +416,8 @@ namespace Microsoft.AspNet.Mvc
 
             ActionBindingContext = new ActionBindingContext();
             ActionBindingContext.InputFormatters = _resourceExecutingContext.InputFormatters;
-            ActionBindingContext.ModelBinder = new CompositeModelBinder(_resourceExecutingContext.ModelBinders);
+            ActionBindingContext.ModelBinder = new CompositeModelBinder(
+                _resourceExecutingContext.ModelBinders, _resourceExecutingContext.ExclusionFilters);
             ActionBindingContext.ValidatorProvider = new CompositeModelValidatorProvider(
                 _resourceExecutingContext.ValidatorProviders);
 

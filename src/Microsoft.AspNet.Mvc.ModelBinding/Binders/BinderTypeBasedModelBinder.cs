@@ -36,14 +36,15 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
 
             var requestServices = bindingContext.OperationBindingContext.HttpContext.RequestServices;
             var instance = _typeActivator.CreateInstance(requestServices, bindingContext.ModelMetadata.BinderType);
-
             var modelBinder = instance as IModelBinder;
             if (modelBinder == null)
             {
                 var modelBinderProvider = instance as IModelBinderProvider;
                 if (modelBinderProvider != null)
                 {
-                    modelBinder = new CompositeModelBinder(modelBinderProvider.ModelBinders);
+                    var excludeFilterProvider = requestServices.GetRequiredService<IValidationExcludeFiltersProvider>();
+                    modelBinder =
+                        new CompositeModelBinder(modelBinderProvider.ModelBinders, excludeFilterProvider.ExcludeFilters);
                 }
                 else
                 {

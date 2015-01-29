@@ -65,7 +65,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                 if (await bindingContext.OperationBindingContext.ModelBinder.BindModelAsync(innerBindingContext))
                 {
                     boundValue = innerBindingContext.Model;
-                    bindingContext.ValidationNode.ChildNodes.Add(innerBindingContext.ValidationNode);
+                    //bindingContext.ValidationNode.ChildNodes.Add(innerBindingContext.ValidationNode);
                 }
                 boundCollection.Add(ModelBindingHelper.CastOrDefault<TElement>(boundValue));
             }
@@ -116,7 +116,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                     boundValue = childBindingContext.Model;
 
                     // merge validation up
-                    bindingContext.ValidationNode.ChildNodes.Add(childBindingContext.ValidationNode);
+                    //bindingContext.ValidationNode.ChildNodes.Add(childBindingContext.ValidationNode);
                 }
 
                 // infinite size collection stops on first bind failure

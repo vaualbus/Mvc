@@ -15,5 +15,5 @@ namespace Microsoft.AspNet.Mvc
         public IList<IInputFormatter> InputFormatters { get; set; }
 
         public IModelValidatorProvider ValidatorProvider { get; set; }
-    }
+	}
 }

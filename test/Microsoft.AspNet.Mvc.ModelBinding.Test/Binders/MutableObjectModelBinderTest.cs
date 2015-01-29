@@ -370,7 +370,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             // Assert
             Assert.True(retValue);
             Assert.IsType<Person>(bindingContext.Model);
-            Assert.True(bindingContext.ValidationNode.ValidateAllProperties);
+            //Assert.True(bindingContext.ValidationNode.ValidateAllProperties);
             testableBinder.Verify();
         }
 
@@ -415,7 +415,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             // Assert
             Assert.True(retValue);
             Assert.IsType<Person>(bindingContext.Model);
-            Assert.True(bindingContext.ValidationNode.ValidateAllProperties);
+            //Assert.True(bindingContext.ValidationNode.ValidateAllProperties);
             testableBinder.Verify();
         }
 
@@ -682,52 +682,52 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             Assert.Equal(new[] { "Never" }, validationInfo.SkipProperties);
         }
 
-        [Fact]
-        public void NullCheckFailedHandler_ModelStateAlreadyInvalid_DoesNothing()
-        {
-            // Arrange
-            var modelState = new ModelStateDictionary();
-            modelState.AddModelError("foo.bar", "Some existing error.");
+        //[Fact]
+        //public void NullCheckFailedHandler_ModelStateAlreadyInvalid_DoesNothing()
+        //{
+        //    // Arrange
+        //    var modelState = new ModelStateDictionary();
+        //    modelState.AddModelError("foo.bar", "Some existing error.");
 
-            var modelMetadata = GetMetadataForType(typeof(Person));
-            var validationNode = new ModelValidationNode(modelMetadata, "foo");
-            var validationContext = new ModelValidationContext(new DataAnnotationsModelMetadataProvider(),
-                                                               Mock.Of<IModelValidatorProvider>(),
-                                                               modelState,
-                                                               modelMetadata,
-                                                               null);
-            var e = new ModelValidatedEventArgs(validationContext, parentNode: null);
+        //    var modelMetadata = GetMetadataForType(typeof(Person));
+        //    var validationNode = new ModelValidationNode(modelMetadata, "foo");
+        //    var validationContext = new ModelValidationContext(new DataAnnotationsModelMetadataProvider(),
+        //                                                       Mock.Of<IModelValidatorProvider>(),
+        //                                                       modelState,
+        //                                                       modelMetadata,
+        //                                                       null);
+        //    var e = new ModelValidatedEventArgs(validationContext, parentNode: null);
 
-            // Act
-            var handler = MutableObjectModelBinder.CreateNullCheckFailedHandler(modelMetadata, incomingValue: null);
-            handler(validationNode, e);
+        //    // Act
+        //    var handler = MutableObjectModelBinder.CreateNullCheckFailedHandler(modelMetadata, incomingValue: null);
+        //    handler(validationNode, e);
 
-            // Assert
-            Assert.False(modelState.ContainsKey("foo"));
-        }
+        //    // Assert
+        //    Assert.False(modelState.ContainsKey("foo"));
+        //}
 
-        [Fact]
-        public void NullCheckFailedHandler_ModelStateValid_AddsErrorString()
-        {
-            // Arrange
-            var modelState = new ModelStateDictionary();
-            var modelMetadata = GetMetadataForType(typeof(Person));
-            var validationNode = new ModelValidationNode(modelMetadata, "foo");
-            var validationContext = new ModelValidationContext(new DataAnnotationsModelMetadataProvider(),
-                                                               Mock.Of<IModelValidatorProvider>(),
-                                                               modelState,
-                                                               modelMetadata,
-                                                               null);
-            var e = new ModelValidatedEventArgs(validationContext, parentNode: null);
+        //[Fact]
+        //public void NullCheckFailedHandler_ModelStateValid_AddsErrorString()
+        //{
+        //    // Arrange
+        //    var modelState = new ModelStateDictionary();
+        //    var modelMetadata = GetMetadataForType(typeof(Person));
+        //    var validationNode = new ModelValidationNode(modelMetadata, "foo");
+        //    var validationContext = new ModelValidationContext(new DataAnnotationsModelMetadataProvider(),
+        //                                                       Mock.Of<IModelValidatorProvider>(),
+        //                                                       modelState,
+        //                                                       modelMetadata,
+        //                                                       null);
+        //    var e = new ModelValidatedEventArgs(validationContext, parentNode: null);
 
-            // Act
-            var handler = MutableObjectModelBinder.CreateNullCheckFailedHandler(modelMetadata, incomingValue: null);
-            handler(validationNode, e);
+        //    // Act
+        //    var handler = MutableObjectModelBinder.CreateNullCheckFailedHandler(modelMetadata, incomingValue: null);
+        //    handler(validationNode, e);
 
-            // Assert
-            Assert.True(modelState.ContainsKey("foo"));
-            Assert.Equal("A value is required.", modelState["foo"].Errors[0].ErrorMessage);
-        }
+        //    // Assert
+        //    Assert.True(modelState.ContainsKey("foo"));
+        //    Assert.Equal("A value is required.", modelState["foo"].Errors[0].ErrorMessage);
+        //}
 
         [Fact]
         [ReplaceCulture]
@@ -756,7 +756,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             dto.Results[nameProperty] = new ComplexModelDtoResult(
                 "John Doe",
                 isModelBound: true,
-                validationNode: new ModelValidationNode(nameProperty, ""));
+                modelName: "");
 
             var testableBinder = new TestableMutableObjectModelBinder();
 
@@ -813,7 +813,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             dto.Results[propertyMetadata] = new ComplexModelDtoResult(
                 "John Doe",
                 isModelBound: true,
-                validationNode: new ModelValidationNode(propertyMetadata, "theModel.Name"));
+                modelName: "theModel.Name");
 
             // Attempt to set non-Nullable property to null. BindRequiredAttribute should not be relevant in this
             // case because the binding exists.
@@ -821,11 +821,10 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             dto.Results[propertyMetadata] = new ComplexModelDtoResult(
                 null,
                 isModelBound: true,
-                validationNode: new ModelValidationNode(propertyMetadata, "theModel.Age"));
+                modelName: "theModel.Age");
 
-            // Act; must also Validate because null-check error handler is late-bound
+            // Act
             testableBinder.ProcessDto(bindingContext, dto);
-            bindingContext.ValidationNode.Validate(validationContext);
 
             // Assert
             var modelStateDictionary = bindingContext.ModelState;
@@ -906,13 +905,13 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             dto.Results[propertyMetadata] = new ComplexModelDtoResult(
                 23,
                 isModelBound: true,
-                validationNode: new ModelValidationNode(propertyMetadata, "theModel.Age"));
+                modelName: "theModel.Age");
 
             propertyMetadata = dto.PropertyMetadata.Single(p => p.PropertyName == "City");
             dto.Results[propertyMetadata] = new ComplexModelDtoResult(
                 null,
                 isModelBound: true,
-                validationNode: new ModelValidationNode(propertyMetadata, "theModel.City"));
+                modelName: "theModel.City");
 
             // Act
             testableBinder.ProcessDto(bindingContext, dto);
@@ -980,7 +979,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             dto.Results[propertyMetadata] = new ComplexModelDtoResult(
                 null,
                 isModelBound: true,
-                validationNode: new ModelValidationNode(propertyMetadata, "theModel.ValueTypeRequired"));
+                modelName: "theModel.ValueTypeRequired");
 
             // Act
             testableBinder.ProcessDto(bindingContext, dto);
@@ -1018,13 +1017,13 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             dto.Results[firstNameProperty] = new ComplexModelDtoResult(
                 "John",
                 isModelBound: true,
-                validationNode: new ModelValidationNode(firstNameProperty, ""));
+                modelName: "");
 
             var lastNameProperty = dto.PropertyMetadata.Single(o => o.PropertyName == "LastName");
             dto.Results[lastNameProperty] = new ComplexModelDtoResult(
                 "Doe",
                 isModelBound: true,
-                validationNode: new ModelValidationNode(lastNameProperty, ""));
+				modelName: "");
 
             var dobProperty = dto.PropertyMetadata.Single(o => o.PropertyName == "DateOfBirth");
             dto.Results[dobProperty] = null;
@@ -1048,12 +1047,11 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             var bindingContext = CreateContext(GetMetadataForObject(new Person()));
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.First(o => o.PropertyName == "PropertyWithDefaultValue");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo");
 
             var dtoResult = new ComplexModelDtoResult(
                 model: null,
                 isModelBound: false,
-                validationNode: validationNode);
+                modelName: "foo");
 
             var requiredValidator = bindingContext.OperationBindingContext
                                                   .ValidatorProvider
@@ -1079,13 +1077,12 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(
                 o => o.PropertyName == "PropertyWithInitializedValue");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo");
 
             // This value won't be used because IsModelBound = false.
             var dtoResult = new ComplexModelDtoResult(
                 model: "bad-value",
                 isModelBound: false,
-                validationNode: validationNode);
+                modelName: "foo");
 
             var testableBinder = new TestableMutableObjectModelBinder();
 
@@ -1106,13 +1103,12 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(
                 o => o.PropertyName == "PropertyWithInitializedValueAndDefault");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo");
 
             // This value won't be used because IsModelBound = false.
             var dtoResult = new ComplexModelDtoResult(
                 model: "bad-value",
                 isModelBound: false,
-                validationNode: validationNode);
+                modelName: "foo");
 
             var testableBinder = new TestableMutableObjectModelBinder();
 
@@ -1131,12 +1127,11 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             // Arrange
             var bindingContext = CreateContext(GetMetadataForObject(new Person()));
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(o => o.PropertyName == "NonUpdateableProperty");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo");
 
             var dtoResult = new ComplexModelDtoResult(
                 model: null,
                 isModelBound: false,
-                validationNode: validationNode);
+                modelName: "foo");
 
             var testableBinder = new TestableMutableObjectModelBinder();
 
@@ -1155,12 +1150,11 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             var bindingContext = CreateContext(GetMetadataForObject(model));
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(o => o.PropertyName == "DateOfBirth");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo");
 
             var dtoResult = new ComplexModelDtoResult(
                 new DateTime(2001, 1, 1),
                 isModelBound: true,
-                validationNode: validationNode);
+                modelName: "foo");
 
             var requiredValidator = bindingContext.OperationBindingContext
                                                   .ValidatorProvider
@@ -1174,7 +1168,6 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             testableBinder.SetProperty(bindingContext, propertyMetadata, dtoResult, requiredValidator);
 
             // Assert
-            validationNode.Validate(validationContext);
             Assert.True(bindingContext.ModelState.IsValid);
             Assert.Equal(new DateTime(2001, 1, 1), model.DateOfBirth);
         }
@@ -1191,11 +1184,10 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             var bindingContext = CreateContext(GetMetadataForObject(model));
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(o => o.PropertyName == "DateOfDeath");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo");
             var dtoResult = new ComplexModelDtoResult(
                 new DateTime(1800, 1, 1),
                 isModelBound: true,
-                validationNode: validationNode);
+                modelName: "foo");
 
             var testableBinder = new TestableMutableObjectModelBinder();
 
@@ -1215,11 +1207,10 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             var bindingContext = CreateContext(GetMetadataForObject(new Person()));
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(o => o.PropertyName == "DateOfBirth");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo");
             var dtoResult = new ComplexModelDtoResult(
                 model: null,
                 isModelBound: true,
-                validationNode: validationNode);
+                modelName: "foo");
 
             var requiredValidator = GetRequiredValidator(bindingContext, propertyMetadata);
             var validationContext = new ModelValidationContext(bindingContext, propertyMetadata);
@@ -1229,9 +1220,9 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             // Act
             testableBinder.SetProperty(bindingContext, propertyMetadata, dtoResult, requiredValidator);
 
-            // Assert
-            Assert.True(bindingContext.ModelState.IsValid);
-            validationNode.Validate(validationContext, bindingContext.ValidationNode);
+			// Assert
+			Assert.True(bindingContext.ModelState.IsValid); // harshg: this would always throw .. ( since it is no longer lazy, we do not need to call validation node).
+            //validationNode.Validate(validationContext, bindingContext.ValidationNode);
             Assert.False(bindingContext.ModelState.IsValid);
         }
 
@@ -1243,11 +1234,10 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             bindingContext.ModelName = " foo";
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(o => o.PropertyName == "ValueTypeRequired");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo.ValueTypeRequired");
             var dtoResult = new ComplexModelDtoResult(
                 model: null,
                 isModelBound: true,
-                validationNode: validationNode);
+                modelName: "foo.ValueTypeRequired");
 
             var requiredValidator = GetRequiredValidator(bindingContext, propertyMetadata);
 
@@ -1270,11 +1260,10 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             bindingContext.ModelName = "foo";
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(o => o.PropertyName == "NameNoAttribute");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo.NameNoAttribute");
             var dtoResult = new ComplexModelDtoResult(
                 model: null,
                 isModelBound: true,
-                validationNode: validationNode);
+                modelName: "foo.NameNoAttribute");
 
             var requiredValidator = GetRequiredValidator(bindingContext, propertyMetadata);
 
@@ -1299,10 +1288,9 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             bindingContext.ModelName = "foo";
 
             var propertyMetadata = bindingContext.ModelMetadata.Properties.Single(o => o.PropertyName == "Name");
-            var validationNode = new ModelValidationNode(propertyMetadata, "foo.Name");
             var dtoResult = new ComplexModelDtoResult(model: null,
                 isModelBound: true,
-                validationNode: validationNode);
+                modelName: "foo.Name");
 
             var requiredValidator = GetRequiredValidator(bindingContext, propertyMetadata);
 

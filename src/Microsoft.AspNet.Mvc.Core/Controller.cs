@@ -81,7 +81,7 @@ namespace Microsoft.AspNet.Mvc
         [Activate]
         public IUrlHelper Url { get; set; }
 
-        public IPrincipal User
+		public IPrincipal User
         {
             get
             {
@@ -1076,13 +1076,8 @@ namespace Microsoft.AspNet.Mvc
                 containerMetadata: null);
 
             var modelName = prefix ?? string.Empty;
-
-            var validationNode = new ModelValidationNode(modelMetadata, modelName)
-            {
-                ValidateAllProperties = true
-            };
-            validationNode.Validate(validationContext);
-
+			var validatationVisitor = new DefaultModelValidator();
+			validatationVisitor.Validate(validationContext, modelName);
             return ModelState.IsValid;
         }
 

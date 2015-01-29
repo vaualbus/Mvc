@@ -134,7 +134,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
             var responseContent = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<Dictionary<string, ErrorCollection>>(responseContent);
-            var errorCollection = Assert.Single(responseObject);
+            var errorCollection = Assert.Single(responseObject, modelState => modelState.Value.Errors.Any());
             var error = Assert.Single(errorCollection.Value.Errors);
             Assert.Equal(expectedModelStateErrorMessage, error.ErrorMessage);
 
@@ -163,7 +163,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
             var responseContent = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<Dictionary<string, ErrorCollection>>(responseContent);
-            var errorCollection = Assert.Single(responseObject);
+            var errorCollection = Assert.Single(responseObject, modelState => modelState.Value.Errors.Any());
             var error = Assert.Single(errorCollection.Value.Errors);
             Assert.Equal(expectedModelStateErrorMessage, error.ErrorMessage);
         }

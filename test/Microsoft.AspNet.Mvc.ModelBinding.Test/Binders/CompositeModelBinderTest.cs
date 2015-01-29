@@ -48,7 +48,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding.Test
                         Assert.Same(bindingContext.ValueProvider, context.ValueProvider);
 
                         context.Model = 42;
-                        bindingContext.ValidationNode.Validating += delegate { validationCalled = true; };
+                        //bindingContext.ValidationNode.Validating += delegate { validationCalled = true; };
                         return Task.FromResult(true);
                     });
             var shimBinder = CreateCompositeBinder(mockIntBinder.Object);
@@ -103,7 +103,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding.Test
                         Assert.Same(bindingContext.ValueProvider, mbc.ValueProvider);
 
                         mbc.Model = expectedModel;
-                        mbc.ValidationNode.Validating += delegate { validationCalled = true; };
+                        //mbc.ValidationNode.Validating += delegate { validationCalled = true; };
                         return Task.FromResult(true);
                     });
 
@@ -146,7 +146,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding.Test
                 .Setup(mb => mb.BindModelAsync(It.IsAny<ModelBindingContext>()))
                 .Callback<ModelBindingContext>(context =>
                 {
-                    context.ValidationNode.Validating += delegate { validationCalled = true; };
+                    //context.ValidationNode.Validating += delegate { validationCalled = true; };
                 })
                 .Returns(Task.FromResult(true));
 
@@ -192,7 +192,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding.Test
                 .Callback<ModelBindingContext>(context =>
                 {
                     context.Model = null;
-                    context.ValidationNode.Validating += delegate { validationCalled = true; };
+                    //context.ValidationNode.Validating += delegate { validationCalled = true; };
                 })
                 .Returns(Task.FromResult(true));
 

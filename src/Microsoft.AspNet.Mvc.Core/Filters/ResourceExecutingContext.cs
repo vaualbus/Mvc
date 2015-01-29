@@ -50,5 +50,10 @@ namespace Microsoft.AspNet.Mvc
         /// Gets or sets the list of <see cref="IModelValidatorProvider"/> instances used by model binding.
         /// </summary>
         public IList<IModelValidatorProvider> ValidatorProviders { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of <see cref="IExcludeTypeValidationFilter"/> instances used my model validation.
+        /// </summary>
+        public IList<IExcludeTypeValidationFilter> ExclusionFilters { get; set; }
     }
 }

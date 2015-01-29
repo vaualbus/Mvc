@@ -38,8 +38,6 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
 
             // post-processing, e.g. property setters and hooking up validation
             ProcessDto(bindingContext, dto);
-            // complex models require full validation
-            bindingContext.ValidationNode.ValidateAllProperties = true;
             return true;
         }
 
@@ -234,31 +232,6 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             return Activator.CreateInstance(bindingContext.ModelType);
         }
 
-        // Called when the property setter null check failed, allows us to add our own error message to ModelState.
-        internal static EventHandler<ModelValidatedEventArgs> CreateNullCheckFailedHandler(ModelMetadata modelMetadata,
-                                                                                           object incomingValue)
-        {
-            return (sender, e) =>
-            {
-                var validationNode = (ModelValidationNode)sender;
-                var modelState = e.ValidationContext.ModelState;
-                var validationState = modelState.GetFieldValidationState(validationNode.ModelStateKey);
-
-                if (validationState == ModelValidationState.Unvalidated)
-                {
-                    // TODO: https://github.com/aspnet/Mvc/issues/450 Revive ModelBinderConfig
-                    // var errorMessage =  ModelBinderConfig.ValueRequiredErrorMessageProvider(e.ValidationContext,
-                    //                                                                            modelMetadata,
-                    //                                                                            incomingValue);
-                    var errorMessage = Resources.ModelBinderConfig_ValueRequired;
-                    if (errorMessage != null)
-                    {
-                        modelState.TryAddModelError(validationNode.ModelStateKey, errorMessage);
-                    }
-                }
-            };
-        }
-
         protected virtual void EnsureModel(ModelBindingContext bindingContext)
         {
             if (bindingContext.Model == null)
@@ -361,7 +334,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             {
                 var addedError = false;
                 var modelStateKey = ModelBindingHelper.CreatePropertyModelName(
-                    bindingContext.ValidationNode.ModelStateKey, missingRequiredProperty);
+                    bindingContext.ModelName, missingRequiredProperty);
 
                 // Update Model as SetProperty() would: Place null value where validator will check for non-null. This
                 // ensures a failure result from a required validator (if any) even for a non-nullable property.
@@ -397,7 +370,6 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                     validationInfo.RequiredValidators.TryGetValue(propertyMetadata.PropertyName,
                                                                   out requiredValidator);
                     SetProperty(bindingContext, propertyMetadata, dtoResult, requiredValidator);
-                    bindingContext.ValidationNode.ChildNodes.Add(dtoResult.ValidationNode);
                 }
             }
         }
@@ -434,7 +406,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             // the property setters throw, e.g. if we're setting entity keys to null.
             if (value == null)
             {
-                var modelStateKey = dtoResult.ValidationNode.ModelStateKey;
+                var modelStateKey = dtoResult.ModelStateKey;
                 var validationState = bindingContext.ModelState.GetFieldValidationState(modelStateKey);
                 if (validationState == ModelValidationState.Unvalidated)
                 {
@@ -471,7 +443,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                     {
                         ex = targetInvocationException.InnerException;
                     }
-                    var modelStateKey = dtoResult.ValidationNode.ModelStateKey;
+                    var modelStateKey = dtoResult.ModelStateKey;
                     var validationState = bindingContext.ModelState.GetFieldValidationState(modelStateKey);
                     if (validationState == ModelValidationState.Unvalidated)
                     {
@@ -482,13 +454,22 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             else
             {
                 // trying to set a non-nullable value type to null, need to make sure there's a message
-                var modelStateKey = dtoResult.ValidationNode.ModelStateKey;
+                var modelStateKey = dtoResult.ModelStateKey;
                 var validationState = bindingContext.ModelState.GetFieldValidationState(modelStateKey);
                 if (validationState == ModelValidationState.Unvalidated)
                 {
-                    dtoResult.ValidationNode.Validated += CreateNullCheckFailedHandler(propertyMetadata, value);
-                }
-            }
+					//dtoResult.ValidationNode.Validated += CreateNullCheckFailedHandler(propertyMetadata, value);
+					// TODO: https://github.com/aspnet/Mvc/issues/450 Revive ModelBinderConfig
+					// var errorMessage =  ModelBinderConfig.ValueRequiredErrorMessageProvider(e.ValidationContext,
+					//                                                                            modelMetadata,
+					//                                                                            incomingValue);
+					var errorMessage = Resources.ModelBinderConfig_ValueRequired;
+					if (errorMessage != null)
+					{
+						bindingContext.ModelState.TryAddModelError(modelStateKey, errorMessage);
+					}
+				}
+			}
         }
 
         // Returns true if validator execution adds a model error.

@@ -42,5 +42,5 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
         /// context.
         /// </summary>
         public IModelValidatorProvider ValidatorProvider { get; set; }
-    }
+	}
 }

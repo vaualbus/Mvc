@@ -57,7 +57,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             ExcludeFromValidationFilters = parentContext.ExcludeFromValidationFilters;
         }
 
-        public ModelMetadata ModelMetadata { get; }
+		public ModelMetadata ModelMetadata { get; }
 
         public ModelMetadata ContainerMetadata { get; }
 

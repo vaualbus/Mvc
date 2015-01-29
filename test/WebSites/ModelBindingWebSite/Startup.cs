@@ -25,6 +25,7 @@ namespace ModelBindingWebSite
                             m.ModelBinders.Insert(0, typeof(TestMetadataAwareBinder));
 
                             m.AddXmlDataContractSerializerFormatter();
+                            m.ValidationExcludeFilters.Add(typeof(Address));
                         });
 
                 services.AddSingleton<ICalculator, DefaultCalculator>();
