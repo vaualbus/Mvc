@@ -10,6 +10,7 @@ using Microsoft.AspNet.Http.Core;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.AspNet.Routing;
+using Microsoft.AspNet.WebUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -60,7 +61,7 @@ namespace System.Web.Http
             var result = controller.BadRequest();
 
             // Assert
-            Assert.Equal(400, Assert.IsType<BadRequestResult>(result).StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, Assert.IsType<BadRequestResult>(result).StatusCode);
         }
 
         [Fact]
@@ -185,7 +186,7 @@ namespace System.Web.Http
             var result = controller.Conflict();
 
             // Assert
-            Assert.Equal(409, Assert.IsType<ConflictResult>(result).StatusCode);
+            Assert.Equal(StatusCodes.Status409Conflict, Assert.IsType<ConflictResult>(result).StatusCode);
         }
 
         [Fact]
@@ -215,7 +216,7 @@ namespace System.Web.Http
             var result = controller.InternalServerError();
 
             // Assert
-            Assert.Equal(500, Assert.IsType<InternalServerErrorResult>(result).StatusCode);
+            Assert.Equal(StatusCodes.Status500InternalServerError, Assert.IsType<InternalServerErrorResult>(result).StatusCode);
         }
 
         [Fact]
@@ -419,7 +420,7 @@ namespace System.Web.Http
             var result = controller.StatusCode(HttpStatusCode.ExpectationFailed);
 
             // Assert
-            Assert.Equal(417, Assert.IsType<HttpStatusCodeResult>(result).StatusCode);
+            Assert.Equal(StatusCodes.Status417ExpectationFailed, Assert.IsType<HttpStatusCodeResult>(result).StatusCode);
         }
 
         private class Product
