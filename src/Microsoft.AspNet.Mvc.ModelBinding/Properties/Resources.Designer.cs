@@ -363,22 +363,6 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
         }
 
         /// <summary>
-        /// The parameter conversion from type '{0}' to type '{1}' failed. See the inner exception for more information.
-        /// </summary>
-        internal static string ValueProviderResult_ConversionThrew
-        {
-            get { return GetString("ValueProviderResult_ConversionThrew"); }
-        }
-
-        /// <summary>
-        /// The parameter conversion from type '{0}' to type '{1}' failed. See the inner exception for more information.
-        /// </summary>
-        internal static string FormatValueProviderResult_ConversionThrew(object p0, object p1)
-        {
-            return string.Format(CultureInfo.CurrentCulture, GetString("ValueProviderResult_ConversionThrew"), p0, p1);
-        }
-
-        /// <summary>
         /// The parameter conversion from type '{0}' to type '{1}' failed because no type converter can convert between these types.
         /// </summary>
         internal static string ValueProviderResult_NoConverterExists
@@ -472,6 +456,22 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
         internal static string FormatModelBinderUtil_ValueInvalid(object p0, object p1)
         {
             return string.Format(CultureInfo.CurrentCulture, GetString("ModelBinderUtil_ValueInvalid"), p0, p1);
+        }
+
+        /// <summary>
+        /// The supplied value is invalid for {0}.
+        /// </summary>
+        internal static string ModelBinderUtil_ValueInvalidGeneric
+        {
+            get { return GetString("ModelBinderUtil_ValueInvalidGeneric"); }
+        }
+
+        /// <summary>
+        /// The supplied value is invalid for {0}.
+        /// </summary>
+        internal static string FormatModelBinderUtil_ValueInvalidGeneric(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ModelBinderUtil_ValueInvalidGeneric"), p0);
         }
 
         private static string GetString(string name, params string[] formatterNames)

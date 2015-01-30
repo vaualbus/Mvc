@@ -162,8 +162,16 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(
-                    Resources.FormatValueProviderResult_ConversionThrew(value.GetType(), destinationType), ex);
+                if (ex is FormatException)
+                {
+                    throw ex;
+                }
+                else
+                {
+                    // TypeConverter throws System.Exception wrapping the FormatException,
+                    // so we throw the inner exception.
+                    throw ex.InnerException;
+                }
             }
         }
 
