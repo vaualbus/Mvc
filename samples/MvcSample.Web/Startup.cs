@@ -107,6 +107,19 @@ namespace MvcSample.Web
                         options.Filters.Add(typeof(PassThroughAttribute), order: 17);
                         options.AddXmlDataContractSerializerFormatter();
                     });
+                    services.ConfigureAuthorization(auth =>
+                    {
+                        auth.AddPolicy("CanViewPage",
+                            new AuthorizationPolicyBuilder()
+                                .RequiresClaim("Permission", "CanViewPage", "CanViewAnything").Build());
+                        auth.AddPolicy("CanViewAnything",
+                            new AuthorizationPolicyBuilder()
+                                .RequiresClaim("Permission", "CanViewAnything").Build());
+                        // This policy basically requires that the auth type is present
+                        var basicPolicy = new AuthorizationPolicyBuilder("Basic").RequiresClaim(ClaimTypes.NameIdentifier);
+                        auth.AddPolicy("RequireBasic", basicPolicy.Build());
+                    });
+
                 });
             }
 
