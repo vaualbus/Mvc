@@ -279,7 +279,7 @@ namespace Microsoft.AspNet.Mvc.Test
         }
 
         [Fact]
-        public async Task Invoke_NoPoliciesShouldNotFail()
+        public async Task Invoke_EmptyPolicyWillFail()
         {
             // Arrange
             var authorizeFilter = new AuthorizeFilter(new AuthorizationPolicyBuilder().Build());
@@ -293,7 +293,7 @@ namespace Microsoft.AspNet.Mvc.Test
             await authorizeFilter.OnAuthorizationAsync(authorizationContext);
 
             // Assert
-            Assert.Null(authorizationContext.Result);
+            Assert.NotNull(authorizationContext.Result);
         }
 
         private AuthorizationContext GetAuthorizationContext(Action<ServiceCollection> registerServices, bool anonymous = false)
