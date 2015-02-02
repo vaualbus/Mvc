@@ -57,6 +57,37 @@ namespace Microsoft.AspNet.Mvc
             return helper.Action(action, controller, values, protocol, host, fragment: null);
         }
 
+        /// <summary>
+        /// Generates a fully qualified or absolute URL for an action method by using the specified action name,
+        /// controller name, route values, protocol to use, host name and fragment.
+        /// </summary>
+        /// <param name="action">The name of the action method.</param>
+        /// <param name="controller">The name of the controller.</param>
+        /// <param name="values">An object that contains the parameters for a route.</param>
+        /// <param name="protocol">The protocol for the URL, such as "http" or "https".</param>
+        /// <param name="host">The host name for the URL.</param>
+        /// <param name="fragment">The fragment for the URL.</param>
+        /// <returns>The fully qualified or absolute URL to an action method.</returns>
+        public static string Action(
+            [NotNull] this IUrlHelper helper,
+            string action,
+            string controller,
+            object values,
+            string protocol,
+            string host,
+            string fragment)
+        {
+            return helper.Action(new UrlActionContext()
+            {
+                Action = action,
+                Controller = controller,
+                Host = host,
+                Values = values,
+                Protocol = protocol,
+                Fragment = fragment
+            });
+        }
+
         public static string RouteUrl([NotNull] this IUrlHelper helper, object values)
         {
             return helper.RouteUrl(routeName: null, values: values, protocol: null, host: null, fragment: null);
@@ -89,6 +120,34 @@ namespace Microsoft.AspNet.Mvc
             string host)
         {
             return helper.RouteUrl(routeName, values, protocol, host, fragment: null);
+        }
+
+        /// <summary>
+        /// Generates a fully qualified or absolute URL for the specified route values by
+        /// using the specified route name, protocol to use, host name and fragment.
+        /// </summary>
+        /// <param name="routeName">The name of the route that is used to generate URL.</param>
+        /// <param name="values">An object that contains the parameters for a route.</param>
+        /// <param name="protocol">The protocol for the URL, such as "http" or "https".</param>
+        /// <param name="host">The host name for the URL.</param>
+        /// <param name="fragment">The fragment for the URL.</param>
+        /// <returns>The fully qualified or absolute URL.</returns>
+        public static string RouteUrl(
+            [NotNull] this IUrlHelper helper,
+            string routeName,
+            object values,
+            string protocol,
+            string host,
+            string fragment)
+        {
+            return helper.RouteUrl(new UrlRouteContext()
+            {
+                RouteName = routeName,
+                Values = values,
+                Protocol = protocol,
+                Host = host,
+                Fragment = fragment
+            });
         }
     }
 }

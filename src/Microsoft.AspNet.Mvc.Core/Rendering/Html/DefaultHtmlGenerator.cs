@@ -75,7 +75,17 @@ namespace Microsoft.AspNet.Mvc.Rendering
             object routeValues,
             object htmlAttributes)
         {
-            var url = _urlHelper.Action(actionName, controllerName, routeValues, protocol, hostname, fragment);
+            var url = _urlHelper.Action(
+                new UrlActionContext()
+                {
+                    Action = actionName,
+                    Controller = controllerName,
+                    Values = routeValues,
+                    Protocol = protocol,
+                    Host = hostname,
+                    Fragment = fragment
+                });
+
             return GenerateLink(linkText, url, htmlAttributes);
         }
 
@@ -193,7 +203,11 @@ namespace Microsoft.AspNet.Mvc.Rendering
             object htmlAttributes)
         {
             var action =
-                _urlHelper.RouteUrl(routeName, values: routeValues, protocol: null, host: null, fragment: null);
+                _urlHelper.RouteUrl(new UrlRouteContext()
+                {
+                    RouteName = routeName,
+                    Values = routeValues
+                });
 
             return GenerateFormCore(viewContext, action, method, htmlAttributes);
         }
@@ -354,7 +368,15 @@ namespace Microsoft.AspNet.Mvc.Rendering
             object routeValues,
             object htmlAttributes)
         {
-            var url = _urlHelper.RouteUrl(routeName, routeValues, protocol, hostName, fragment);
+            var url = _urlHelper.RouteUrl(new UrlRouteContext()
+            {
+                RouteName = routeName,
+                Values = routeValues,
+                Protocol = protocol,
+                Host = hostName,
+                Fragment = fragment
+            });
+
             return GenerateLink(linkText, url, htmlAttributes);
         }
 
