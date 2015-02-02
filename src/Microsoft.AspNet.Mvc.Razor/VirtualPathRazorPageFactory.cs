@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Concurrent;
 using Microsoft.AspNet.FileProviders;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.PageExecutionInstrumentation;
@@ -19,6 +20,8 @@ namespace Microsoft.AspNet.Mvc.Razor
         private readonly IRazorFileProviderCache _fileProviderCache;
         private readonly ICompilerCache _compilerCache;
         private IRazorCompilationService _razorcompilationService;
+        private static readonly ConcurrentDictionary<Type, ObjectFactory> _razorPageCache =
+             new ConcurrentDictionary<Type, ObjectFactory>();
 
         public VirtualPathRazorPageFactory(IServiceProvider serviceProvider,
                                            ICompilerCache compilerCache,
@@ -64,7 +67,11 @@ namespace Microsoft.AspNet.Mvc.Razor
                     relativeFileInfo,
                     RazorCompilationService.Compile);
 
-                var page = (IRazorPage)ActivatorUtilities.CreateInstance(_serviceProvider, result.CompiledType);
+                //var page = (IRazorPage)ActivatorUtilities.CreateInstance(_serviceProvider, result.CompiledType);
+                var createRazorPage = _razorPageCache.GetOrAdd(result.CompiledType,
+                    ActivatorUtilities.CreateFactory(result.CompiledType, Type.EmptyTypes));
+
+                var page = (IRazorPage)createRazorPage(_serviceProvider, null);
                 page.Path = relativePath;
 
                 return page;
