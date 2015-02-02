@@ -2,12 +2,17 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
+using FiltersWebSite;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Mvc.Xml;
 using Microsoft.AspNet.TestHost;
 using Xunit;
 
@@ -221,15 +226,14 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             // Arrange
             var server = TestServer.Create(_services, _app);
             var client = server.CreateClient();
+            var expectedOutput = await WriteDataAsync(typeof(DummyClass), new DummyClass() { SampleInt = 10 });
 
             // Act
             var response = await client.GetAsync("http://localhost/XmlSerializer/GetDummyClass?sampleInput=10");
 
             //Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal("<DummyClass xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><SampleInt>10</SampleInt></DummyClass>",
-                await response.Content.ReadAsStringAsync());
+            Assert.Equal(expectedOutput, await response.Content.ReadAsStringAsync());
         }
 
         [Fact]
@@ -238,15 +242,14 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             // Arrange
             var server = TestServer.Create(_services, _app);
             var client = server.CreateClient();
+            var expectedOutput = await WriteDataAsync(typeof(DummyClass), new DummyClass() { SampleInt = 120 });
 
             // Act
             var response = await client.GetAsync("http://localhost/DummyClass/GetDummyClass");
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal("<DummyClass xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><SampleInt>120</SampleInt></DummyClass>",
-                await response.Content.ReadAsStringAsync());
+            Assert.Equal(expectedOutput, await response.Content.ReadAsStringAsync());
         }
 
         [Fact]
@@ -625,6 +628,33 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal("0", await response.Content.ReadAsStringAsync());
+        }
+
+        private static async Task<string> WriteDataAsync(
+            Type inputType,
+            object input,
+            XmlWriterSettings settings = null,
+            Encoding encoding = null)
+        {
+            var xmlSerializer = new XmlSerializer(inputType);
+            var stream = new MemoryStream();
+
+            if (settings == null)
+            {
+                settings = FormattingUtilities.GetDefaultXmlWriterSettings();
+            }
+
+            if(encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
+
+            var xmlWriter = XmlWriter.Create(stream, settings);
+            xmlSerializer.Serialize(xmlWriter, input);
+            stream.Position = 0;
+            var streamReader = new StreamReader(stream, encoding);
+
+            return await streamReader.ReadToEndAsync();
         }
     }
 }
