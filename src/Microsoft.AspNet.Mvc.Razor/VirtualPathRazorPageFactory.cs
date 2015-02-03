@@ -67,11 +67,10 @@ namespace Microsoft.AspNet.Mvc.Razor
                     relativeFileInfo,
                     RazorCompilationService.Compile);
 
-                //var page = (IRazorPage)ActivatorUtilities.CreateInstance(_serviceProvider, result.CompiledType);
-                var createRazorPage = _razorPageCache.GetOrAdd(result.CompiledType,
+                var razorPageFactory = _razorPageCache.GetOrAdd(result.CompiledType,
                     ActivatorUtilities.CreateFactory(result.CompiledType, Type.EmptyTypes));
 
-                var page = (IRazorPage)createRazorPage(_serviceProvider, null);
+                var page = (IRazorPage)razorPageFactory(_serviceProvider, null);
                 page.Path = relativePath;
 
                 return page;
