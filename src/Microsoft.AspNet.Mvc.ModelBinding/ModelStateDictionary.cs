@@ -196,6 +196,11 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
         /// </returns>
         public bool TryAddModelError([NotNull] string key, [NotNull] Exception exception)
         {
+            if (ErrorCount >= MaxAllowedErrors - 1)
+            {
+                EnsureMaxErrorsReachedRecorded();
+                return false;
+            }
 
             if (exception is FormatException)
             {
@@ -215,12 +220,6 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                 }
 
                 return TryAddModelError(key, errorMessage);
-            }
-
-            if (ErrorCount >= MaxAllowedErrors - 1)
-            {
-                EnsureMaxErrorsReachedRecorded();
-                return false;
             }
 
             ErrorCount++;

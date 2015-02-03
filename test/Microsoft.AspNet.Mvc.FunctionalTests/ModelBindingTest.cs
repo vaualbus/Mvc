@@ -1528,6 +1528,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, body);
+        }
 
         public async Task ModelBinder_FormatsDontMatch_ThrowsUserFriendlyException()
         {
