@@ -10,11 +10,11 @@ namespace Microsoft.AspNet.Mvc
     {
         /// <summary>
         /// Generates a fully qualified or absolute URL specifiied by <see cref="Mvc.UrlActionContext"/> for an action
-        /// method, whicn contains action name, controller name, route values, protocol to use, host name, and fragment.
+        /// method, which contains action name, controller name, route values, protocol to use, host name, and fragment.
         /// </summary>
         /// <param name="actionContext">The context object for the generated URLs for an action method.</param>
         /// <returns>The fully qualified or absolute URL to an action method.</returns>
-        string Action(UrlActionContext actionContext);
+        string Action([NotNull] UrlActionContext actionContext);
 
         /// <summary>
         /// Converts a virtual (relative) path to an application absolute path.
@@ -54,6 +54,6 @@ namespace Microsoft.AspNet.Mvc
         /// </summary>
         /// <param name="routeContext">The context object for the generated URLs for a route.</param>
         /// <returns>The fully qualified or absolute URL.</returns>
-        string RouteUrl(UrlRouteContext routeContext);
+        string RouteUrl([NotNull] UrlRouteContext routeContext);
     }
 }

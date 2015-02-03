@@ -18,7 +18,7 @@ namespace Microsoft.AspNet.Mvc
         }
 
         /// <summary>
-        /// The object that contains the parameters for <see cref="RouteName"/>
+        /// The object that contains the route values for the generated URLs.
         /// </summary>
         public object Values
         {
