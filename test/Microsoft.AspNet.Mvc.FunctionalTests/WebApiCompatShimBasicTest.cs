@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -34,7 +34,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(
                 "Hello, Anonymous User from WebApiCompatShimWebSite.BasicApiController.WriteToHttpContext",
                 content);
@@ -52,7 +52,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(
                 "Visited: /api/Blog/BasicApi/GenerateUrl",
                 content);
@@ -81,7 +81,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var formatters = JsonConvert.DeserializeObject<string[]>(content);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expected, formatters);
         }
 
@@ -99,7 +99,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 "http://localhost/api/Blog/HttpResponseException/ThrowsHttpResponseExceptionWithHttpStatusCode");
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
             Assert.Equal(string.Empty, content);
         }
@@ -117,7 +117,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 "/ThrowsHttpResponseExceptionWithHttpResponseMessage?message=send some message");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
             Assert.Equal("send some message", content);
         }
@@ -135,7 +135,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
             // Assert
             // Ensure we do not get a no content result.
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
             Assert.Equal(string.Empty, content);
         }
@@ -154,7 +154,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
             // Assert
             // Ensure we do get a no content result.
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, (int)response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
             Assert.Equal(string.Empty, content);
         }
@@ -224,7 +224,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expected, content);
         }
 
@@ -246,7 +246,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expected, content);
         }
 
@@ -267,7 +267,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expected, content);
 
             IEnumerable<string> values;
@@ -298,7 +298,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
 
             // Assert		
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.NotNull(response.Content);
             Assert.NotNull(response.Content.Headers.ContentLength);
             Assert.Null(response.Headers.TransferEncodingChunked);
@@ -339,7 +339,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var user = await response.Content.ReadAsAsync<WebApiCompatShimWebSite.User>();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("Test User", user.Name);
             Assert.Equal(mediaType, response.Content.Headers.ContentType.MediaType);
         }
@@ -362,7 +362,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var user = await response.Content.ReadAsAsync<WebApiCompatShimWebSite.User>();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("Test User", user.Name);
             Assert.Equal(mediaType, response.Content.Headers.ContentType.MediaType);
         }
@@ -389,7 +389,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var error = await response.Content.ReadAsAsync<HttpError>();
 
             // Assert
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.Equal(StatusCodes.Status500InternalServerError, (int)response.StatusCode);
             Assert.Equal("It failed.", error.Message);
             Assert.Equal(mediaType, response.Content.Headers.ContentType.MediaType);
         }
@@ -413,15 +413,15 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var user = await response.Content.ReadAsAsync<WebApiCompatShimWebSite.User>();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("Test User", user.Name);
             Assert.Equal("text/json", response.Content.Headers.ContentType.MediaType);
         }
 
         [Theory]
-        [InlineData("http://localhost/Mvc/Index", HttpStatusCode.OK)]
-        [InlineData("http://localhost/api/Blog/Mvc/Index", HttpStatusCode.NotFound)]
-        public async Task WebApiRouting_AccessMvcController(string url, HttpStatusCode expected)
+        [InlineData("http://localhost/Mvc/Index", StatusCodes.Status200OK)]
+        [InlineData("http://localhost/api/Blog/Mvc/Index", StatusCodes.Status404NotFound)]
+        public async Task WebApiRouting_AccessMvcController(string url, int expected)
         {
             // Arrange
             var server = TestServer.Create(_provider, _app);
@@ -433,13 +433,13 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(expected, response.StatusCode);
+            Assert.Equal(expected, (int)response.StatusCode);
         }
 
         [Theory]
-        [InlineData("http://localhost/BasicApi/GenerateUrl", HttpStatusCode.NotFound)]
-        [InlineData("http://localhost/api/Blog/BasicApi/GenerateUrl", HttpStatusCode.OK)]
-        public async Task WebApiRouting_AccessWebApiController(string url, HttpStatusCode expected)
+        [InlineData("http://localhost/BasicApi/GenerateUrl", StatusCodes.Status404NotFound)]
+        [InlineData("http://localhost/api/Blog/BasicApi/GenerateUrl", StatusCodes.Status200OK)]
+        public async Task WebApiRouting_AccessWebApiController(string url, int expected)
         {
             // Arrange
             var server = TestServer.Create(_provider, _app);
@@ -451,7 +451,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(expected, response.StatusCode);
+            Assert.Equal(expected, (int)response.StatusCode);
         }
 
         [Fact]
@@ -466,7 +466,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/HttpRequestMessage/ReturnByteArrayContent");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.NotNull(response.Content);
             Assert.Equal("text/plain", response.Content.Headers.ContentType.MediaType);
 
@@ -486,7 +486,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/HttpRequestMessage/ReturnStreamContent");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.NotNull(response.Content);
             Assert.Equal("image/jpeg", response.Content.Headers.ContentType.MediaType);
             Assert.NotNull(response.Content.Headers.ContentDisposition);
@@ -509,7 +509,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/HttpRequestMessage/" + action);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.NotNull(response.Content);
             Assert.Equal("application/pdf", response.Content.Headers.ContentType.MediaType);
 
@@ -530,7 +530,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/HttpRequestMessage/ReturnPushStreamContentWithCustomHeaders");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.NotNull(response.Content);
             Assert.Equal("application/octet-stream", response.Content.Headers.ContentType.ToString());
 

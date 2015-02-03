@@ -2,11 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -35,7 +35,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(mediaType, response.Content.Headers.ContentType.MediaType);
             Assert.Equal("{\"Message\":\"hello\"}", content);
         }
@@ -61,7 +61,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("{\"Message\":\"hello\"}", content);
         }
@@ -83,7 +83,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("null", content);
         }
@@ -105,7 +105,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("\"hello\"", content);
         }
@@ -129,7 +129,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(mediaType, response.Content.Headers.ContentType.MediaType);
             Assert.Equal("{\"message\":\"hello\"}", content);
         }
@@ -155,7 +155,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("{\"message\":\"hello\"}", content);
         }
@@ -176,7 +176,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/message+json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("{\"Message\":\"hello\"}", content);
         }

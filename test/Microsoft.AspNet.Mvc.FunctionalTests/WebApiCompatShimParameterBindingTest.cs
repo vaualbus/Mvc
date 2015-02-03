@@ -3,12 +3,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -35,7 +35,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("5", content);
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("-1", content);
         }
 
@@ -78,7 +78,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("5", content);
         }
 
@@ -101,7 +101,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("5", content);
         }
 
@@ -121,7 +121,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expected, content);
         }
 
@@ -144,7 +144,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("-1", content);
         }
 
@@ -169,7 +169,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("{\"Id\":5,\"Name\":\"Test Employee\"}", content);
         }
 
@@ -192,7 +192,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("{\"Id\":5,\"Name\":\"Test Employee\"}", content);
         }
 
@@ -218,7 +218,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("{\"Id\":5,\"Name\":\"Name_Override\"}", content);
         }
     }

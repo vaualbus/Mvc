@@ -2,12 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ConnegWebSite;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -73,7 +73,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var body = await response.Content.ReadAsStringAsync();
             // Response body is empty instead of null.
             Assert.Empty(body);
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, (int)response.StatusCode);
             Assert.Equal(0, response.Content.Headers.ContentLength);
         }
 
@@ -95,7 +95,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var body = await response.Content.ReadAsStringAsync();
             // Response body is empty instead of null.
             Assert.Empty(body);
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, (int)response.StatusCode);
             Assert.Equal(0, response.Content.Headers.ContentLength);
         }
 
@@ -119,7 +119,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var body = await response.Content.ReadAsStringAsync();
             // Response body is empty instead of null.
             Assert.Empty(body);
-            Assert.Equal(HttpStatusCode.NotAcceptable, response.StatusCode);
+            Assert.Equal(StatusCodes.Status406NotAcceptable, (int)response.StatusCode);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Testing;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.WebApiCompatShim
@@ -35,7 +36,7 @@ namespace Microsoft.AspNet.Mvc.WebApiCompatShim
             var exception = new HttpResponseException(HttpStatusCode.BadGateway);
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadGateway, exception.Response.StatusCode);
+            Assert.Equal(StatusCodes.Status502BadGateway, (int)exception.Response.StatusCode);
             Assert.Equal("Processing of the HTTP request resulted in an exception." +
                          " Please see the HTTP response returned by the 'Response' " +
                          "property of this exception for details.",

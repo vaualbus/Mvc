@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using BasicWebSite;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -49,7 +49,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var responseContent = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expectedMediaType, response.Content.Headers.ContentType);
             Assert.Equal(expectedContent, responseContent);
         }
@@ -111,7 +111,7 @@ page:<root/>
             var response = await client.GetAsync("http://localhost/Employee/Create");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var responseContent = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, responseContent);
         }
@@ -139,7 +139,7 @@ page:<root/>
             var response = await client.PostAsync("http://localhost/Employee/Create", postContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var responseContent = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, responseContent);
         }
@@ -167,7 +167,7 @@ page:<root/>
             var response = await client.PostAsync("http://localhost/Employee/Create", postContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var responseContent = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, responseContent);
         }

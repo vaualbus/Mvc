@@ -3,12 +3,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -36,7 +36,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync(url);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("text/html", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("utf-8", response.Content.Headers.ContentType.CharSet);
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync(url);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("utf-8", response.Content.Headers.ContentType.CharSet);
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -93,7 +93,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync(url, content);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("utf-8", response.Content.Headers.ContentType.CharSet);
             var responseContent = await response.Content.ReadAsStringAsync();

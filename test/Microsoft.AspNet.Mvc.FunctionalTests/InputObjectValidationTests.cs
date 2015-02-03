@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,7 +64,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync("http://localhost/Validation/Index", content);
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("User has been registerd : " + sampleName,
                 await response.Content.ReadAsStringAsync());
         }
@@ -89,7 +88,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync("http://localhost/Validation/Index", content);
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("The field Id must be between 1 and 2000.," +
                 "The field Name must be a string or array type with a minimum length of '5'.," +
                 "The field Alias must be a string with a minimum length of 3 and a maximum length of 15.," +
@@ -109,7 +108,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync("http://localhost/Validation/GetDeveloperName", content);
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("No model validation for developer, even though developer.Name is empty.", 
                          await response.Content.ReadAsStringAsync());
         }
@@ -181,7 +180,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync("http://localhost/Validation/GetDeveloperAlias", content);
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("The Name field is required.", await response.Content.ReadAsStringAsync());
         }
 

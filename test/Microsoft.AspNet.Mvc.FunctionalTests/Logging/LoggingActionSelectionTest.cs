@@ -5,13 +5,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LoggingWebSite;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Mvc.Logging;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -37,7 +37,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                                                         requestTraceId));
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var responseData = await response.Content.ReadAsStringAsync();
             Assert.Equal("Home.Index", responseData);
 
@@ -72,7 +72,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                                                         requestTraceId));
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
 
             var logs = await GetLogsAsync(client, requestTraceId);
             var scopeNode = logs.FindScope(nameof(MvcRouteHandler) + ".RouteAsync");

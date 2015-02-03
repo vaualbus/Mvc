@@ -4,11 +4,11 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Runtime;
 using PrecompilationWebSite;
@@ -47,7 +47,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 // Assert - 1
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
                 var parsedResponse1 = new ParsedResponse(responseContent);
                 Assert.Equal(assemblyName, parsedResponse1.ViewStart);
                 Assert.Equal(assemblyName, parsedResponse1.Layout);

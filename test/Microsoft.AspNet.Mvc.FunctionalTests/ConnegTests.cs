@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using ConnegWebSite;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -101,7 +101,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Normal/ReturnUser_NoMatchingFormatter");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotAcceptable, response.StatusCode);
+            Assert.Equal(StatusCodes.Status406NotAcceptable, (int)response.StatusCode);
         }
 
         [Theory]
@@ -121,7 +121,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/ProducesWithMediaTypeParameters/" + action);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.NotNull(response.Content);
             var contentType = response.Content.Headers.ContentType;
             Assert.NotNull(contentType);
@@ -384,7 +384,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotAcceptable, response.StatusCode);
+            Assert.Equal(StatusCodes.Status406NotAcceptable, (int)response.StatusCode);
         }
 
         [Fact]
@@ -403,7 +403,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotAcceptable, response.StatusCode);
+            Assert.Equal(StatusCodes.Status406NotAcceptable, (int)response.StatusCode);
         }
 
         [Fact]
@@ -418,7 +418,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/FormatFilter/MethodWithFormatFilter.json");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -432,7 +432,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/FormatFilter/MethodWithFormatFilter");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(body, "MethodWithFormatFilter");
         }

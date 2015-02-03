@@ -12,11 +12,11 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Testing;
+using Microsoft.AspNet.WebUtilities;
 #if ASPNET50
 using Moq;
 #endif
 using Xunit;
-using Microsoft.AspNet.WebUtilities;
 
 namespace Microsoft.AspNet.Mvc.Test
 {

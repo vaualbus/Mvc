@@ -3,13 +3,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Mvc.Routing;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Routing.Template;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -31,7 +31,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Routing/Conventional");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<ResultData>(body);
@@ -56,7 +56,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Routing/Attribute");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<ResultData>(body);
@@ -94,7 +94,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             response = await client.GetAsync("http://localhost/Routing/Conventional");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             body = await response.Content.ReadAsStringAsync();
             result = JsonConvert.DeserializeObject<ResultData>(body);

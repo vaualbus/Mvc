@@ -3,7 +3,6 @@
 
 using System;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,6 +11,7 @@ using System.Xml.Serialization;
 using ActionResultsWebSite;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -39,7 +39,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
             Assert.Equal("", await response.Content.ReadAsStringAsync());
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("1", response.Headers.Location.OriginalString);
             Assert.Equal("{\"SampleInt\":10,\"SampleString\":\"Foo\"}", await response.Content.ReadAsStringAsync());
         }
@@ -78,7 +78,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("/ActionResultsVerification/GetDummy/1", response.Headers.Location.OriginalString);
             Assert.Equal("{\"SampleInt\":10,\"SampleString\":\"Foo\"}", await response.Content.ReadAsStringAsync());
         }
@@ -98,7 +98,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal(
                 "http://localhost/ActionResultsVerification/GetDummy/1",
                 response.Headers.Location.OriginalString);
@@ -120,7 +120,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("/ActionResultsVerification/GetDummy/1", response.Headers.Location.OriginalString);
             Assert.Equal("{\"SampleInt\":10,\"SampleString\":\"Foo\"}", await response.Content.ReadAsStringAsync());
         }
@@ -140,7 +140,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("http://localhost/ActionResultsVerification/GetDummy/1", response.Headers.Location.OriginalString);
             Assert.Equal("{\"SampleInt\":10,\"SampleString\":\"Foo\"}", await response.Content.ReadAsStringAsync());
         }
@@ -160,7 +160,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("http://localhost/ActionResultsVerification/GetDummy/1", response.Headers.Location.OriginalString);
             Assert.Equal("{\"SampleInt\":10,\"SampleString\":\"Foo\"}", await response.Content.ReadAsStringAsync());
         }
@@ -180,7 +180,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("http://localhost/foo/ActionResultsVerification/GetDummy/1", response.Headers.Location.OriginalString);
             Assert.Equal("{\"SampleInt\":10,\"SampleString\":\"Foo\"}", await response.Content.ReadAsStringAsync());
         }
@@ -203,7 +203,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
             Assert.Equal("[\"Something went wrong with the model.\"]",
                 await response.Content.ReadAsStringAsync());
         }
@@ -222,7 +222,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("content", await response.Content.ReadAsStringAsync());
             Assert.Equal("text/plain", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("utf-8", response.Content.Headers.ContentType.CharSet);
@@ -242,7 +242,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("utf-8", response.Content.Headers.ContentType.CharSet);
             Assert.Equal("content", await response.Content.ReadAsStringAsync());
@@ -262,7 +262,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
             Assert.Equal("us-ascii", response.Content.Headers.ContentType.CharSet);
             Assert.Equal("content", await response.Content.ReadAsStringAsync());
@@ -282,7 +282,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
         }
     }
 }

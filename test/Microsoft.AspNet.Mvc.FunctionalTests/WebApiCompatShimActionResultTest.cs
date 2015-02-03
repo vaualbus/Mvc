@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -26,7 +26,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetBadRequest");
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
             Assert.Equal("{\"Message\":\"Hello, world!\"}", content);
         }
 
@@ -59,7 +59,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
             Assert.Equal(expected, content);
         }
 
@@ -74,7 +74,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetConflict");
 
             // Assert
-            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+            Assert.Equal(StatusCodes.Status409Conflict, (int)response.StatusCode);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.Ambiguous, response.StatusCode);
+            Assert.Equal(StatusCodes.Status300MultipleChoices, (int)response.StatusCode);
             Assert.Equal("{\"Name\":\"Test User\"}", content);
         }
 
@@ -105,7 +105,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("{\"Name\":\"Test User\"}", content);
             Assert.Equal("5", response.Headers.Location.OriginalString);
         }
@@ -122,7 +122,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("{\"Name\":\"Test User\"}", content);
             Assert.Equal("/api/Blog/ActionResult/GetUser/5", response.Headers.Location.OriginalString);
         }
@@ -139,7 +139,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("{\"Name\":\"Test User\"}", content);
             Assert.Equal("http://localhost/api/Blog/ActionResult/5", response.Headers.Location.OriginalString);
         }
@@ -156,7 +156,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("{\"Name\":\"Test User\"}", content);
             Assert.Equal("/api/Blog/ActionResult/GetUser/5", response.Headers.Location.OriginalString);
         }
@@ -173,7 +173,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
             Assert.Equal("{\"Name\":\"Test User\"}", content);
             Assert.Equal("http://localhost/api/Blog/ActionResult/GetUser/5", response.Headers.Location.OriginalString);
         }
@@ -189,7 +189,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetInternalServerError");
 
             // Assert
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.Equal(StatusCodes.Status500InternalServerError, (int)response.StatusCode);
         }
 
         [Fact]
@@ -204,7 +204,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.Equal(StatusCodes.Status500InternalServerError, (int)response.StatusCode);
             Assert.Equal("{\"Message\":\"An error has occurred.\"}", content);
         }
 
@@ -220,7 +220,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("{\"Name\":\"Test User\"}", content);
         }
 
@@ -241,7 +241,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expected, content);
         }
 
@@ -262,7 +262,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expected, content);
             Assert.Equal("utf-32", response.Content.Headers.ContentType.CharSet);
         }
@@ -278,7 +278,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetNotFound");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -292,7 +292,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetOk");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
         }
 
         [Fact]
@@ -307,7 +307,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var content = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("{\"Name\":\"Test User\"}", content);
         }
 
@@ -322,7 +322,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetRedirectString");
 
             // Assert
-            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+            Assert.Equal(StatusCodes.Status302Found, (int)response.StatusCode);
             Assert.Equal("http://localhost/api/Users", response.Headers.Location.OriginalString);
         }
 
@@ -337,7 +337,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetRedirectUri");
 
             // Assert
-            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+            Assert.Equal(StatusCodes.Status302Found, (int)response.StatusCode);
             Assert.Equal("api/Blog", response.Headers.Location.OriginalString);
         }
 
@@ -352,7 +352,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetResponseMessage");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(new string[] { "Hello" }, response.Headers.GetValues("X-Test"));
         }
 
@@ -367,7 +367,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/api/Blog/ActionResult/GetStatusCode");
 
             // Assert
-            Assert.Equal(HttpStatusCode.PaymentRequired, response.StatusCode);
+            Assert.Equal(StatusCodes.Status402PaymentRequired, (int)response.StatusCode);
         }
     }
 }

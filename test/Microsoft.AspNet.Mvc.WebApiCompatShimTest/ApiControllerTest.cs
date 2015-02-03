@@ -202,7 +202,7 @@ namespace System.Web.Http
 
             // Assert
             var contentResult = Assert.IsType<NegotiatedContentResult<Product>>(result);
-            Assert.Equal((int)HttpStatusCode.Found, contentResult.StatusCode);
+            Assert.Equal(StatusCodes.Status302Found, contentResult.StatusCode);
             Assert.Equal(content, contentResult.Value);
         }
 

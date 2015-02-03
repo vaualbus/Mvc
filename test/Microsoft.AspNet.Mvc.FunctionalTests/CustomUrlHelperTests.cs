@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -37,7 +37,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 var responseData = await response.Content.ReadAsStringAsync();
 
                 //Assert
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
                 Assert.Equal(_cdnServerBaseUrl + "/bootstrap.min.css", responseData);
             }
         }
@@ -56,7 +56,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 var responseData = await response.Content.ReadAsStringAsync();
 
                 //Assert
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
                 Assert.Contains(_cdnServerBaseUrl + "/bootstrap.min.css", responseData);
             }
         }
@@ -77,7 +77,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 var responseData = await response.Content.ReadAsStringAsync();
 
                 //Assert
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
                 Assert.Equal(expectedLink, responseData, ignoreCase: false);
             }
         }

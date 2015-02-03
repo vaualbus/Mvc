@@ -3,12 +3,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using InlineConstraints;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -30,7 +30,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/area-exists/Users");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var returnValue = await response.Content.ReadAsStringAsync();
             Assert.Equal("Users.Index", returnValue);
         }
@@ -64,7 +64,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductById/5");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var result = await GetResponseValues(response);
             Assert.Equal(result["id"], "5");
@@ -83,7 +83,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductById");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["controller"], "InlineConstraints_Products");
             Assert.Equal(result["action"], "GetProductById");
@@ -100,7 +100,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductById/asdf");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByName/asdf");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["name"], "asdf");
             Assert.Equal(result["controller"], "InlineConstraints_Products");
@@ -132,7 +132,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByName/asd123");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByName");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 await client.GetAsync(@"http://localhost/products/GetProductByManufacturingDate/2014-10-11T13:45:30");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var result = await GetResponseValues(response);
             Assert.Equal(result["dateTime"], new DateTime(2014, 10, 11, 13, 45, 30));
@@ -180,7 +180,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByCategoryName/Sports");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["name"], "Sports");
             Assert.Equal(result["controller"], "InlineConstraints_Products");
@@ -199,7 +199,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 await client.GetAsync("http://localhost/products/GetProductByCategoryName/SportsSportsSportsSports");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -213,7 +213,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByCategoryName");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["controller"], "InlineConstraints_Products");
             Assert.Equal(result["action"], "GetProductByCategoryName");
@@ -230,7 +230,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByCategoryId/40");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["catId"], "40");
             Assert.Equal(result["controller"], "InlineConstraints_Products");
@@ -248,7 +248,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByCategoryId/5");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -262,7 +262,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByCategoryId/asdf");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -276,7 +276,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByPrice/4023.23423");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["price"], "4023.23423");
             Assert.Equal(result["controller"], "InlineConstraints_Products");
@@ -294,7 +294,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByPrice");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["controller"], "InlineConstraints_Products");
             Assert.Equal(result["action"], "GetProductByPrice");
@@ -311,7 +311,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByManufacturerId/57");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["manId"], "57");
             Assert.Equal(result["controller"], "InlineConstraints_Products");
@@ -329,7 +329,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetProductByManufacturerId");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["controller"], "InlineConstraints_Products");
             Assert.Equal(result["action"], "GetProductByManufacturerId");
@@ -346,7 +346,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetUserByName/abc");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["controller"], "InlineConstraints_Products");
             Assert.Equal(result["action"], "GetUserByName");
@@ -364,7 +364,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/products/GetUserByName/abcd");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -379,7 +379,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 await client.GetAsync("http://localhost/Store/GetStoreById/691cf17a-791b-4af8-99fd-e739e168170f");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["id"], "691cf17a-791b-4af8-99fd-e739e168170f");
             Assert.Equal(result["controller"], "InlineConstraints_Store");
@@ -397,7 +397,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Store/GetStoreById");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["controller"], "InlineConstraints_Store");
             Assert.Equal(result["action"], "GetStoreById");
@@ -414,7 +414,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Store/GetStoreById/691cf17a-791b");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -428,7 +428,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Store/GetStoreByLocation/Bellevue");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var result = await GetResponseValues(response);
             Assert.Equal(result["location"], "Bellevue");
             Assert.Equal(result["controller"], "InlineConstraints_Store");
@@ -446,7 +446,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Store/GetStoreByLocation/BellevueRedmond");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -460,7 +460,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Store/GetStoreByLocation/Be");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         [Fact]
@@ -474,7 +474,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Store/GetStoreByLocation/Bell124");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
         }
 
         public static IEnumerable<object[]> QueryParameters

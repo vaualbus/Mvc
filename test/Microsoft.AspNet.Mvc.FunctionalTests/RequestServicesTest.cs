@@ -2,11 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -94,7 +94,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             request2.Headers.TryAddWithoutValidation("RequestId", requestId2);
 
             var response2 = await client.SendAsync(request2);
-            Assert.Equal(HttpStatusCode.NotFound, response2.StatusCode);
+            Assert.Equal(StatusCodes.Status404NotFound, (int)response2.StatusCode);
         }
     }
 }

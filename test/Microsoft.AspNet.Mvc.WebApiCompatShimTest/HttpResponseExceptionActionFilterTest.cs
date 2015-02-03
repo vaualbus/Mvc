@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Http.Core;
 using Microsoft.AspNet.Routing;
+using Microsoft.AspNet.WebUtilities;
 using Moq;
 #endif
 using Xunit;
@@ -83,7 +84,7 @@ namespace Microsoft.AspNet.Mvc.WebApiCompatShim
             var response = Assert.IsType<HttpResponseMessage>(result.Value);
             Assert.NotNull(response.RequestMessage);
             Assert.Equal(context.HttpContext.GetHttpRequestMessage(), response.RequestMessage);
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
         }
 
 #endif

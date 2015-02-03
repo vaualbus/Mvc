@@ -3,12 +3,12 @@
 
 using System;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Xunit;
 
 namespace Microsoft.AspNet.Mvc.FunctionalTests
@@ -46,7 +46,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
                 // Assert
                 Assert.NotNull(response);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
                 // Assert
                 Assert.NotNull(response);
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+                Assert.Equal(StatusCodes.Status404NotFound, (int)response.StatusCode);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
                 // Assert
                 Assert.NotNull(response);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
                 Assert.Equal("<User xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=" +
                 "\"http://schemas.datacontract.org/2004/07/MvcSample.Web.Models\"><About>I like playing Football" +
                 "</About><Address>My address</Address><Age>13</Age><Alive>true</Alive><Dependent><About i:nil=\"true\" />" +
@@ -97,10 +97,10 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
         }
 
         [Theory]
-        [InlineData("http://localhost/Filters/ChallengeUser", HttpStatusCode.Unauthorized)]
-        [InlineData("http://localhost/Filters/AllGranted", HttpStatusCode.Unauthorized)]
-        [InlineData("http://localhost/Filters/NotGrantedClaim", HttpStatusCode.Unauthorized)]
-        public async Task FiltersController_Tests(string url, HttpStatusCode statusCode)
+        [InlineData("http://localhost/Filters/ChallengeUser", StatusCodes.Status401Unauthorized)]
+        [InlineData("http://localhost/Filters/AllGranted", StatusCodes.Status401Unauthorized)]
+        [InlineData("http://localhost/Filters/NotGrantedClaim", StatusCodes.Status401Unauthorized)]
+        public async Task FiltersController_Tests(string url, int statusCode)
         {
             using (TestHelper.ReplaceCallContextServiceLocationService(_services))
             {
@@ -113,7 +113,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
                 // Assert
                 Assert.NotNull(response);
-                Assert.Equal(statusCode, response.StatusCode);
+                Assert.Equal(statusCode, (int)response.StatusCode);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
                 // Assert
                 Assert.NotNull(response);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
                 Assert.Equal("Boom HelloWorld", await response.Content.ReadAsStringAsync());
             }
         }

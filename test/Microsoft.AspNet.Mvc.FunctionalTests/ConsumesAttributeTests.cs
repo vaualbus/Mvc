@@ -3,7 +3,6 @@
 
 using System;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,6 +11,7 @@ using System.Xml.Serialization;
 using ActionConstraintsWebSite;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -37,7 +37,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var product = JsonConvert.DeserializeObject<Product>(
                     await response.Content.ReadAsStringAsync());
             // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, (int)response.StatusCode);
             Assert.Null(product);
         }
 
@@ -56,7 +56,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var exception = response.GetServerException();
 
             // Assert
-            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.Equal(StatusCodes.Status500InternalServerError, (int)response.StatusCode);
             Assert.Equal(typeof(AmbiguousActionException).FullName, exception.ExceptionType);
             Assert.Equal(
                 "Multiple actions matched. The following actions matched route data and had all constraints "+
@@ -81,7 +81,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var product = JsonConvert.DeserializeObject<Product>(
                       await response.Content.ReadAsStringAsync());
             // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, (int)response.StatusCode);
             Assert.Null(product);
         }
 
@@ -104,7 +104,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var product = JsonConvert.DeserializeObject<Product>(
                       await response.Content.ReadAsStringAsync());
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(requestContentType, product.SampleString);
         }
 
@@ -129,7 +129,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var product = JsonConvert.DeserializeObject<Product>(
                       await response.Content.ReadAsStringAsync());
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expectedString, product.SampleString);
         }
 
@@ -154,7 +154,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var responseString = await response.Content.ReadAsStringAsync();
             var product = JsonConvert.DeserializeObject<Product>(responseString);
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expectedString, product.SampleString);
         }
     }

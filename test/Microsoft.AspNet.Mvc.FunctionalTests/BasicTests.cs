@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using BasicWebSite;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -49,7 +49,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var responseContent = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expectedMediaType, response.Content.Headers.ContentType);
             Assert.Equal(expectedContent, responseContent);
         }
@@ -69,7 +69,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var responseContent = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expectedMediaType, response.Content.Headers.ContentType);
             Assert.Equal(expectedContent, responseContent);
         }
@@ -86,7 +86,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var responseContent = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, (int)response.StatusCode);
             Assert.Null(response.Content.Headers.ContentType);
             Assert.Equal(0, response.Content.Headers.ContentLength);
             Assert.Equal(0, responseContent.Length);
@@ -103,7 +103,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Home/ActionReturningTask");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, (int)response.StatusCode);
             Assert.Equal("Hello, World!", Assert.Single(response.Headers.GetValues("Message")));
         }
 
@@ -120,7 +120,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             for (var i = 0; i < 3; i++)
             {
                 var result = await client.GetAsync("http://localhost/Monitor/CountActionDescriptorInvocations");
-                Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+                Assert.Equal(StatusCodes.Status200OK, (int)result.StatusCode);
                 var responseContent = await result.Content.ReadAsStringAsync();
 
                 Assert.Equal(expectedContent, responseContent);
@@ -138,7 +138,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Home/HttpsOnlyAction");
 
             // Assert
-            Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
+            Assert.Equal(StatusCodes.Status301MovedPermanently, (int)response.StatusCode);
             Assert.NotNull(response.Headers.Location);
             Assert.Equal("https://localhost/Home/HttpsOnlyAction", response.Headers.Location.ToString());
             Assert.Equal(0, response.Content.Headers.ContentLength);
@@ -160,7 +160,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 "http://localhost/Home/HttpsOnlyAction"));
 
             // Assert
-            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+            Assert.Equal(StatusCodes.Status403Forbidden, (int)response.StatusCode);
             Assert.Equal(0, response.Content.Headers.ContentLength);
 
             var responseBytes = await response.Content.ReadAsByteArrayAsync();
@@ -182,7 +182,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 "https://localhost/Home/HttpsOnlyAction"));
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
         }
 
         [Fact]
@@ -201,7 +201,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("https://localhost/Home/JsonTextInView");
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("text/html", response.Content.Headers.ContentType.MediaType);
 
             var actualBody = await response.Content.ReadAsStringAsync();
@@ -255,7 +255,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Links/Index?view=" + viewName);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var responseData = await response.Content.ReadAsStringAsync();
             Assert.Contains(expectedLink, responseData, StringComparison.OrdinalIgnoreCase);
         }

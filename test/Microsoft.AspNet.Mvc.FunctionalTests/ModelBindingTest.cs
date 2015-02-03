@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.TestHost;
+using Microsoft.AspNet.WebUtilities;
 using ModelBindingWebSite;
 using ModelBindingWebSite.ViewModels;
 using Newtonsoft.Json;
@@ -48,7 +48,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal(expectedValue, await response.Content.ReadAsStringAsync());
         }
 
@@ -68,7 +68,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync("http://localhost/Home/GetCustomer?Id=1234", content);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var customer = JsonConvert.DeserializeObject<Customer>(
                         await response.Content.ReadAsStringAsync());
             Assert.NotNull(customer.Department);
@@ -89,7 +89,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/FromServices_Calculator/Add?left=1234&right=1");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("1235", await response.Content.ReadAsStringAsync());
         }
 
@@ -104,7 +104,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 "http://localhost/FromServices_Calculator/Calculate?Left=10&Right=5&Operator=*");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("50", await response.Content.ReadAsStringAsync());
         }
 
@@ -119,7 +119,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                "http://localhost/FromServices_Calculator/CalculateWithPrecision?Left=10&Right=5&Operator=*");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("50", await response.Content.ReadAsStringAsync());
         }
 
@@ -220,7 +220,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var user = JsonConvert.DeserializeObject<User_FromForm>(
                       await response.Content.ReadAsStringAsync());
 
@@ -258,7 +258,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var user = JsonConvert.DeserializeObject<User_FromForm>(
                       await response.Content.ReadAsStringAsync());
 
@@ -295,7 +295,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var user = JsonConvert.DeserializeObject<User_FromForm>(
                        await response.Content.ReadAsStringAsync());
 
@@ -339,7 +339,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var user = JsonConvert.DeserializeObject<User_FromForm>(
                        await response.Content.ReadAsStringAsync());
 
@@ -379,7 +379,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.SendAsync(request);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var user = JsonConvert.DeserializeObject<User_FromBody>(
                        await response.Content.ReadAsStringAsync());
 
@@ -432,7 +432,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      "?Name=somename&Age=12");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var emp = JsonConvert.DeserializeObject<Employee>(
                             await response.Content.ReadAsStringAsync());
             Assert.Null(emp.Department);
@@ -454,7 +454,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      "?Name=somename&Age=12");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var person = JsonConvert.DeserializeObject<Person>(
                             await response.Content.ReadAsStringAsync());
             Assert.NotNull(person);
@@ -475,7 +475,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      "/GetPersonParameter?p="); // here p is the model name.
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var person = JsonConvert.DeserializeObject<Person>(
                             await response.Content.ReadAsStringAsync());
             Assert.NotNull(person);
@@ -496,7 +496,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      "/GetPersonParameter");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var person = JsonConvert.DeserializeObject<Person>(
                             await response.Content.ReadAsStringAsync());
             Assert.NotNull(person);
@@ -517,7 +517,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      "/GetCompany?Employees[0].Name=somename&Age=12");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var company = JsonConvert.DeserializeObject<Company>(
                             await response.Content.ReadAsStringAsync());
             Assert.NotNull(company);
@@ -539,7 +539,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      "/GetCompany");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var company = JsonConvert.DeserializeObject<Company>(
                             await response.Content.ReadAsStringAsync());
             Assert.NotNull(company);
@@ -560,7 +560,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      "/GetCompany");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var company = JsonConvert.DeserializeObject<Company>(
                             await response.Content.ReadAsStringAsync());
             Assert.NotNull(company);
@@ -585,7 +585,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      "/GetCompany");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var company = JsonConvert.DeserializeObject<Company>(
                             await response.Content.ReadAsStringAsync());
             Assert.NotNull(company);
@@ -606,7 +606,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                      client.GetAsync(url);
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             Assert.NotNull(body);
@@ -628,7 +628,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Home/ActionWithCancellationToken");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("true", await response.Content.ReadAsStringAsync());
         }
 
@@ -644,7 +644,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 "http://localhost/Home/ActionWithCancellationTokenModel?wrapper=bogusValue");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("true", await response.Content.ReadAsStringAsync());
         }
 
@@ -659,7 +659,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Home/Index?byteValues=SGVsbG9Xb3JsZA==");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("HelloWorld", await response.Content.ReadAsStringAsync());
         }
 
@@ -674,7 +674,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync("http://localhost/Home/Index?byteValues=");
 
             //Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             Assert.Equal("\0", await response.Content.ReadAsStringAsync());
         }
 
@@ -903,7 +903,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
                 "?Value=someValue");
 
             // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.Equal(StatusCodes.Status204NoContent, (int)response.StatusCode);
             Assert.Equal(string.Empty, await response.Content.ReadAsStringAsync());
         }
 
@@ -1107,7 +1107,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PutAsJsonAsync("http://localhost/api/vehicles/520", content);
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             var modelStateErrors = JsonConvert.DeserializeObject<IDictionary<string, IEnumerable<string>>>(body);
@@ -1145,7 +1145,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PutAsJsonAsync("http://localhost/api/vehicles/520", content);
 
             // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(StatusCodes.Status400BadRequest, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             var modelStateErrors = JsonConvert.DeserializeObject<IDictionary<string, IEnumerable<string>>>(body);
@@ -1181,7 +1181,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PutAsJsonAsync("http://localhost/api/vehicles/520", postedContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<VehicleViewModel>(body);
@@ -1218,7 +1218,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PutAsXmlAsync("http://localhost/api/vehicles/520", postedContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<VehicleViewModel>(body);
@@ -1257,7 +1257,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsJsonAsync(url, postedContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, body);
         }
@@ -1288,7 +1288,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsJsonAsync(url, postedContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, body);
         }
@@ -1319,7 +1319,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsJsonAsync(url, postedContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, body);
         }
@@ -1338,7 +1338,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync(url, formData);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var fileDetails = JsonConvert.DeserializeObject<FileDetails>(
                                     await response.Content.ReadAsStringAsync());
             Assert.Equal("test.txt", fileDetails.Filename);
@@ -1360,7 +1360,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync(url, formData);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var fileDetailsArray = JsonConvert.DeserializeObject<FileDetails[]>(
                                         await response.Content.ReadAsStringAsync());
             Assert.Equal(2, fileDetailsArray.Length);
@@ -1387,7 +1387,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync(url, formData);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var fileDetailsLookup = JsonConvert.DeserializeObject<IDictionary<string, IList<FileDetails>>>(
                                         await response.Content.ReadAsStringAsync());
             Assert.Equal(2, fileDetailsLookup.Count);
@@ -1420,7 +1420,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync(url, formData);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
             var book = JsonConvert.DeserializeObject<KeyValuePair<string, FileDetails>>(
                                     await response.Content.ReadAsStringAsync());
             var bookName = book.Key;
@@ -1465,7 +1465,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync(url);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, body);
@@ -1485,7 +1485,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.GetAsync(url);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, body);
@@ -1524,7 +1524,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var response = await client.PostAsync(url, requestContent);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(StatusCodes.Status200OK, (int)response.StatusCode);
 
             var body = await response.Content.ReadAsStringAsync();
             Assert.Equal(expectedContent, body);
