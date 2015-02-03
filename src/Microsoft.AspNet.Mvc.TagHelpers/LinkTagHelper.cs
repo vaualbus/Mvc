@@ -2,10 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
+using Microsoft.Framework.FileSystemGlobbing;
+using Microsoft.Framework.FileSystemGlobbing.Abstractions;
 using Microsoft.Framework.Logging;
+using Microsoft.Framework.Runtime;
 
 namespace Microsoft.AspNet.Mvc.TagHelpers
 {
@@ -14,6 +18,7 @@ namespace Microsoft.AspNet.Mvc.TagHelpers
     /// </summary>
     public class LinkTagHelper : TagHelper
     {
+        private const string HrefAttributeName = "asp-href";
         private const string FallbackHrefAttributeName = "asp-fallback-href";
         private const string FallbackTestClassAttributeName = "asp-fallback-test-class";
         private const string FallbackTestPropertyAttributeName = "asp-fallback-test-property";
@@ -21,7 +26,6 @@ namespace Microsoft.AspNet.Mvc.TagHelpers
         private const string FallbackTestMetaTemplate = "<meta name=\"x-stylesheet-fallback-test\" class=\"{0}\" />";
         private const string FallbackJavaScriptResourceName = "compiler/resources/LinkTagHelper_FallbackJavaScript.js";
 
-        // NOTE: All attributes are required for the LinkTagHelper to process.
         private static readonly string[] RequiredAttributes = new[]
         {
             FallbackHrefAttributeName,
@@ -29,6 +33,12 @@ namespace Microsoft.AspNet.Mvc.TagHelpers
             FallbackTestPropertyAttributeName,
             FallbackTestValueAttributeName
         };
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [HtmlAttributeName(HrefAttributeName)]
+        public string Href { get; set; }
 
         /// <summary>
         /// The URL of a CSS stylesheet to fallback to in the case the primary one fails (as specified in the href
@@ -58,6 +68,10 @@ namespace Microsoft.AspNet.Mvc.TagHelpers
         // Protected to ensure subclasses are correctly activated. Internal for ease of use when testing.
         [Activate]
         protected internal ILogger<LinkTagHelper> Logger { get; set; }
+
+        // Protected to ensure subclasses are correctly activated. Internal for ease of use when testing.
+        [Activate]
+        protected internal IApplicationEnvironment ApplicationEnvironment { get; set; }
 
         /// <inheritdoc />
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -101,6 +115,26 @@ namespace Microsoft.AspNet.Mvc.TagHelpers
             content.Append("</script>");
 
             output.Content = content.ToString();
+        }
+
+        private IEnumerable<string> ExpandGlobbedHref(string href)
+        {
+            var segments = href.Split(',');
+            var matcher = new Matcher();
+
+            foreach (var path in segments)
+            {
+                if (path.StartsWith("!"))
+                {
+                    matcher.AddExclude(path);
+                }
+                else
+                {
+                    matcher.AddInclude(path);
+                }
+            }
+
+            // Get the app base as a DirectoryInfo
         }
     }
 }
