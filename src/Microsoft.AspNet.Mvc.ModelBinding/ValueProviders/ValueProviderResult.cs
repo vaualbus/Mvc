@@ -6,6 +6,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 
 namespace Microsoft.AspNet.Mvc.ModelBinding
 {
@@ -170,7 +171,10 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                 {
                     // TypeConverter throws System.Exception wrapping the FormatException,
                     // so we throw the inner exception.
-                    throw ex.InnerException;
+                    ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+
+                    // this code is never reached because the previous line is throwing;
+                    throw;
                 }
             }
         }
