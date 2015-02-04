@@ -81,6 +81,9 @@ namespace Microsoft.AspNet.Mvc
         [Activate]
         public IUrlHelper Url { get; set; }
 
+        [Activate]
+        public IValidationExcludeFiltersProvider ValidationFilterProvider { get; set; }
+
         public IPrincipal User
         {
             get
@@ -1073,16 +1076,12 @@ namespace Microsoft.AspNet.Mvc
                 BindingContext.ValidatorProvider,
                 ModelState,
                 modelMetadata,
-                containerMetadata: null);
+                containerMetadata: null,
+                excludeFromValidationFilters: ValidationFilterProvider.ExcludeFilters);
 
             var modelName = prefix ?? string.Empty;
-
-            var validationNode = new ModelValidationNode(modelMetadata, modelName)
-            {
-                ValidateAllProperties = true
-            };
-            validationNode.Validate(validationContext);
-
+            var validatationVisitor = new DefaultModelValidator();
+            validatationVisitor.Validate(validationContext, modelName);
             return ModelState.IsValid;
         }
 
