@@ -9,7 +9,7 @@ namespace Microsoft.AspNet.Mvc
     public interface IUrlHelper
     {
         /// <summary>
-        /// Generates a fully qualified or absolute URL specifiied by <see cref="Mvc.UrlActionContext"/> for an action
+        /// Generates a fully qualified or absolute URL specified by <see cref="Mvc.UrlActionContext"/> for an action
         /// method, which contains action name, controller name, route values, protocol to use, host name, and fragment.
         /// </summary>
         /// <param name="actionContext">The context object for the generated URLs for an action method.</param>

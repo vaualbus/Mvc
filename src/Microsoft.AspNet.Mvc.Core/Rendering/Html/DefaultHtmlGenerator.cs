@@ -75,16 +75,16 @@ namespace Microsoft.AspNet.Mvc.Rendering
             object routeValues,
             object htmlAttributes)
         {
-            var url = _urlHelper.Action(
-                new UrlActionContext()
+            var urlContext = new UrlActionContext()
                 {
                     Action = actionName,
                     Controller = controllerName,
                     Values = routeValues,
                     Protocol = protocol,
                     Host = hostname,
-                    Fragment = fragment
-                });
+                    Fragment = fragment,
+                };
+            var url = _urlHelper.Action(urlContext);
 
             return GenerateLink(linkText, url, htmlAttributes);
         }
