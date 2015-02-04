@@ -26,7 +26,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
 
         [Fact]
-        public async Task ValidationRuns_ForBodyAndNonBodyBoundModels()
+        public async Task TypeBasedExclusion_ForBodyAndNonBodyBoundModels()
         {
             // Arrange
             var server = TestServer.Create(_services, _app);
@@ -48,20 +48,15 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
         }
 
         [Fact]
-        public async Task Test()
+        public async Task ModelValidation_DoesNotValidate_AnAlreadyValidatedObject()
         {
             // Arrange
             var server = TestServer.Create(_services, _app);
             var client = server.CreateClient();
 
-            // Make sure the body object gets created with an invalid zip.
-            var input = "{\"OfficeAddress.Zip\":\"45\"}";
-            var content = new StringContent(input, Encoding.UTF8, "application/json");
-
             // Act
-            // Make sure the non body based object gets created with an invalid zip.
-            var response = await client.PostAsync(
-                "http://localhost/Validation/Something?Department.Name=Area46", content);
+            var response = await client.GetAsync(
+                "http://localhost/Validation/AvoidRecursive?Name=selfish");
 
             // Assert
             var stringValue = await response.Content.ReadAsStringAsync();
@@ -1055,7 +1050,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             // Act
             var response = await client.GetStringAsync("http://localhost/TryUpdateModel/" +
                 "CreateAndUpdateUser" +
-                "?RegisterationMonth=March");
+                "?RegistedeburationMonth=March");
 
             // Assert
             var result = JsonConvert.DeserializeObject<bool>(response);

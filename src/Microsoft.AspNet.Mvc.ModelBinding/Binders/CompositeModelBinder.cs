@@ -19,22 +19,15 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
     /// </remarks>
     public class CompositeModelBinder : ICompositeModelBinder
     {
-        public CompositeModelBinder([NotNull] IEnumerable<IModelBinder> modelBinders) :
-            this(modelBinders, validationExcludeFilters: new List<IExcludeTypeValidationFilter>())
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the CompositeModelBinder class.
         /// </summary>
         /// <param name="modelBinders">A collection of <see cref="IModelBinder"/> instances.</param>
         /// <param name="validationExcludeFiltersProvider">
         /// A type which can provide <see cref="IValidationExcludeFiltersProvider.ExcludeFilters"/>.</param>
-        public CompositeModelBinder([NotNull] IEnumerable<IModelBinder> modelBinders,
-                                    [NotNull] IEnumerable<IExcludeTypeValidationFilter> validationExcludeFilters)
+        public CompositeModelBinder([NotNull] IEnumerable<IModelBinder> modelBinders)
         {
             ModelBinders = new List<IModelBinder>(modelBinders);
-            ValidationExcludeFilters = new List<IExcludeTypeValidationFilter>(validationExcludeFilters);
         }
 
         /// <inheritdoc />
@@ -62,33 +55,31 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                 return false; // something went wrong
             }
 
-            // Only perform validation at the root of the object graph. ValidationNode will recursively walk the graph.
-            // Ignore ComplexModelDto since it essentially wraps the primary object.
-            if (newBindingContext.IsModelSet && IsBindingAtRootOfObjectGraph(newBindingContext))
-            {
-				var modelName = newBindingContext.ModelName;
-				// run validation and return the model
-				// If we fell back to an empty prefix above and are dealing with simple types,
-				// propagate the non-blank model name through for user clarity in validation errors.
-				// Complex types will reveal their individual properties as model names and do not require this.
-				if (!newBindingContext.ModelMetadata.IsComplexType &&
-                    string.IsNullOrEmpty(newBindingContext.ModelName))
-                {
-					modelName = bindingContext.ModelName;
-                }
+    //        // Only perform validation at the root of the object graph. ValidationNode will recursively walk the graph.
+    //        // Ignore ComplexModelDto since it essentially wraps the primary object.
+    //        if (newBindingContext.IsModelSet && IsBindingAtRootOfObjectGraph(newBindingContext))
+    //        {
+                //var modelName = newBindingContext.ModelName;
+                //// run validation and return the model
+                //// If we fell back to an empty prefix above and are dealing with simple types,
+                //// propagate the non-blank model name through for user clarity in validation errors.
+                //// Complex types will reveal their individual properties as model names and do not require this.
+                //if (!newBindingContext.ModelMetadata.IsComplexType &&
+    //                string.IsNullOrEmpty(newBindingContext.ModelName))
+    //            {
+                //  modelName = bindingContext.ModelName;
+    //            }
 
-                var validationContext = new ModelValidationContext(
-                    bindingContext.OperationBindingContext.MetadataProvider,
-                    bindingContext.OperationBindingContext.ValidatorProvider,
-                    bindingContext.ModelState,
-                    bindingContext.ModelMetadata,
-                    containerMetadata: null,
-                    excludeFromValidationFilters: ValidationExcludeFilters);
+    //            var validationContext = new ModelValidationContext(
+    //                bindingContext.OperationBindingContext.MetadataProvider,
+    //                bindingContext.OperationBindingContext.ValidatorProvider,
+    //                bindingContext.ModelState,
+    //                bindingContext.ModelMetadata,
+    //                containerMetadata: null,
+    //                excludeFromValidationFilters: ValidationExcludeFilters);
 
-                (new DefaultModelValidator()).Validate(validationContext, modelName);
-
-                //newBindingContext.ValidationNode.Validate(validationContext, parentNode: null);
-            }
+    //            (new DefaultModelValidator()).Validate(validationContext, modelName);
+    //        }
 
             bindingContext.OperationBindingContext.BodyBindingState =
                 newBindingContext.OperationBindingContext.BodyBindingState;

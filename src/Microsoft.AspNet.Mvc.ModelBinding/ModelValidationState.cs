@@ -8,6 +8,5 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
         Unvalidated,
         Invalid,
         Valid,
-        Skipped,
     }
 }

@@ -30,7 +30,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
         }
 
         private bool ValidateNonVisitedNodeAndChildren(string modelKey,
-			ModelMetadata metadata, ValidationContext validationContext, IEnumerable<IModelValidator> validators)
+            ModelMetadata metadata, ValidationContext validationContext, IEnumerable<IModelValidator> validators)
         {
             // Recursion guard to avoid stack overflows
             RuntimeHelpers.EnsureSufficientExecutionStack();
@@ -121,17 +121,17 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
             // when there are large arrays of null, this will save a significant amount of processing
             // with minimal impact to other scenarios.
             var anyValidatorsDefined = validators.Any();
-			var index = 0;
+            var index = 0;
             var isValid = true;
-			foreach (var element in model)
+            foreach (var element in model)
             {
                 // If the element is non null, the recursive calls might find more validators.
                 // If it's null, then a shallow validation will be performed.
                 if (element != null || anyValidatorsDefined)
                 {
                     elementMetadata.Model = element;
-					var elementKey = ModelBindingHelper.CreateIndexModelName(currentKey, index);
-					if (!ValidateNonVisitedNodeAndChildren(elementKey, elementMetadata, validationContext, validators))
+                    var elementKey = ModelBindingHelper.CreateIndexModelName(currentKey, index);
+                    if (!ValidateNonVisitedNodeAndChildren(elementKey, elementMetadata, validationContext, validators))
                     {
                         isValid = false;
                     }
@@ -162,11 +162,11 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                         new ModelValidationContext(validationContext.ModelValidationContext, metadata);
                 var modelState = validationContext.ModelValidationContext.ModelState;
                 var fieldValidationState = modelState.GetFieldValidationState(modelKey);
-				var modelValidationState = modelState.GetValidationState(modelKey);
+                var modelValidationState = modelState.GetValidationState(modelKey);
 
-				// If either the model or its properties are unvalidated, validate them now.
-				if (modelValidationState == ModelValidationState.Unvalidated ||
-					fieldValidationState == ModelValidationState.Unvalidated)
+                // If either the model or its properties are unvalidated, validate them now.
+                if (modelValidationState == ModelValidationState.Unvalidated ||
+                    fieldValidationState == ModelValidationState.Unvalidated)
                 {
                     foreach (var validator in validators)
                     {
@@ -227,7 +227,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
         {
             public ModelValidationContext ModelValidationContext { get; set; }
 
-			public HashSet<object> Visited { get; set; }
+            public HashSet<object> Visited { get; set; }
         }
     }
 }

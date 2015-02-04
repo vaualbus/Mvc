@@ -1984,9 +1984,9 @@ namespace Microsoft.AspNet.Mvc
             var inputFormattersProvider = new Mock<IInputFormattersProvider>();
             inputFormattersProvider.SetupGet(o => o.InputFormatters)
                                             .Returns(new List<IInputFormatter>());
-			var excludeFilterProvider = new Mock<IValidationExcludeFiltersProvider>();
-			excludeFilterProvider.SetupGet(o => o.ExcludeFilters)
-								 .Returns(new List<IExcludeTypeValidationFilter>());
+            var excludeFilterProvider = new Mock<IValidationExcludeFiltersProvider>();
+            excludeFilterProvider.SetupGet(o => o.ExcludeFilters)
+                                 .Returns(new List<IExcludeTypeValidationFilter>());
             var invoker = new TestControllerActionInvoker(
                 actionContext,
                 filterProvider.Object,
@@ -1997,7 +1997,7 @@ namespace Microsoft.AspNet.Mvc
                 new MockModelBinderProvider(),
                 new MockModelValidatorProviderProvider(),
                 new MockValueProviderFactoryProvider(),
-				excludeFilterProvider.Object,
+                Mock.Of<IControllerActionArgumentValidator>(),
                 new MockScopedInstance<ActionBindingContext>());
 
             return invoker;
@@ -2039,11 +2039,9 @@ namespace Microsoft.AspNet.Mvc
             var inputFormattersProvider = new Mock<IInputFormattersProvider>();
             inputFormattersProvider.SetupGet(o => o.InputFormatters)
                                             .Returns(new List<IInputFormatter>());
-			var validationExcludeFilterProvider = new Mock<IValidationExcludeFiltersProvider>();
-			validationExcludeFilterProvider.SetupGet(o => o.ExcludeFilters)
-											.Returns(new List<IExcludeTypeValidationFilter>());
+            var validationExcludeFilterProvider = new Mock<IControllerActionArgumentValidator>();
 
-			var invoker = new ControllerActionInvoker(
+            var invoker = new ControllerActionInvoker(
                 actionContext,
                 Mock.Of<INestedProviderManager<FilterProviderContext>>(),
                 controllerFactory.Object,
@@ -2053,7 +2051,7 @@ namespace Microsoft.AspNet.Mvc
                 new MockModelBinderProvider() { ModelBinders = new List<IModelBinder>() { binder.Object } },
                 new MockModelValidatorProviderProvider(),
                 new MockValueProviderFactoryProvider(),
-				validationExcludeFilterProvider.Object,
+                Mock.Of<IControllerActionArgumentValidator>(),
                 new MockScopedInstance<ActionBindingContext>());
 
             // Act
@@ -2151,7 +2149,7 @@ namespace Microsoft.AspNet.Mvc
                 IModelBinderProvider modelBinderProvider,
                 IModelValidatorProviderProvider modelValidatorProviderProvider,
                 IValueProviderFactoryProvider valueProviderFactoryProvider,
-                IValidationExcludeFiltersProvider validationExcludeFiltersProvider,
+                IControllerActionArgumentValidator controllerActionArgumentValidator,
                 IScopedInstance<ActionBindingContext> actionBindingContext)
                 : base(
                       actionContext,
@@ -2163,7 +2161,7 @@ namespace Microsoft.AspNet.Mvc
                       modelBinderProvider,
                       modelValidatorProviderProvider,
                       valueProviderFactoryProvider,
-                      validationExcludeFiltersProvider,
+                      controllerActionArgumentValidator,
                       actionBindingContext)
             {
                 ControllerFactory = controllerFactory;

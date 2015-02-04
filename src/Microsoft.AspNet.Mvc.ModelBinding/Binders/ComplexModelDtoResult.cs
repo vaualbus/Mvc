@@ -13,16 +13,16 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
         public ComplexModelDtoResult(
             object model,
             bool isModelBound,
-			string modelName)
+            string modelName)
         {
-			ModelStateKey = modelName;
+            ModelStateKey = modelName;
             Model = model;
             IsModelBound = isModelBound;
         }
 
-		public string ModelStateKey { get; set; }
+        public string ModelStateKey { get; set; }
 
-		public bool IsModelBound { get; }
+        public bool IsModelBound { get; }
 
         public object Model { get; set; }
     }

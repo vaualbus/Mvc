@@ -16,12 +16,12 @@ namespace Microsoft.AspNet.Mvc.ModelBinding.Test
             var result = new ComplexModelDtoResult(
                 "some string",
                 isModelBound: true,
-				modelName: "someName");
+                modelName: "someName");
 
             // Assert
             Assert.Equal("some string", result.Model);
             Assert.True(result.IsModelBound);
             Assert.Equal("someName", result.ModelStateKey);
-		}
+        }
     }
 }

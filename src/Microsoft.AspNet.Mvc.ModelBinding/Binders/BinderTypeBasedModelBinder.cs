@@ -42,9 +42,7 @@ namespace Microsoft.AspNet.Mvc.ModelBinding
                 var modelBinderProvider = instance as IModelBinderProvider;
                 if (modelBinderProvider != null)
                 {
-                    var excludeFilterProvider = requestServices.GetRequiredService<IValidationExcludeFiltersProvider>();
-                    modelBinder =
-                        new CompositeModelBinder(modelBinderProvider.ModelBinders, excludeFilterProvider.ExcludeFilters);
+                    modelBinder = new CompositeModelBinder(modelBinderProvider.ModelBinders);
                 }
                 else
                 {

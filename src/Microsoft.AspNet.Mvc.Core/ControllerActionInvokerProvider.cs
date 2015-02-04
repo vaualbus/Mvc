@@ -17,7 +17,7 @@ namespace Microsoft.AspNet.Mvc
         private readonly IModelValidatorProviderProvider _modelValidationProviderProvider;
         private readonly IValueProviderFactoryProvider _valueProviderFactoryProvider;
         private readonly IScopedInstance<ActionBindingContext> _actionBindingContextAccessor;
-        private readonly IValidationExcludeFiltersProvider _validationExcludeFiltersProvider;
+        private readonly IControllerActionArgumentValidator _controllerActionArgumentValidator;
 
         public ControllerActionInvokerProvider(
             IControllerFactory controllerFactory,
@@ -27,8 +27,8 @@ namespace Microsoft.AspNet.Mvc
             IModelBinderProvider modelBinderProvider,
             IModelValidatorProviderProvider modelValidationProviderProvider,
             IValueProviderFactoryProvider valueProviderFactoryProvider,
-            IScopedInstance<ActionBindingContext> actionBindingContextAccessor,
-            IValidationExcludeFiltersProvider validationExcludeFiltersProvider)
+            IControllerActionArgumentValidator controllerActionArgumentValidator,
+            IScopedInstance<ActionBindingContext> actionBindingContextAccessor)
         {
             _controllerFactory = controllerFactory;
             _inputFormattersProvider = inputFormattersProvider;
@@ -38,7 +38,7 @@ namespace Microsoft.AspNet.Mvc
             _modelValidationProviderProvider = modelValidationProviderProvider;
             _valueProviderFactoryProvider = valueProviderFactoryProvider;
             _actionBindingContextAccessor = actionBindingContextAccessor;
-            _validationExcludeFiltersProvider = validationExcludeFiltersProvider;
+            _controllerActionArgumentValidator = controllerActionArgumentValidator;
         }
 
         public int Order
@@ -62,7 +62,7 @@ namespace Microsoft.AspNet.Mvc
                                     _modelBinderProvider,
                                     _modelValidationProviderProvider,
                                     _valueProviderFactoryProvider,
-                                    _validationExcludeFiltersProvider,
+                                    _controllerActionArgumentValidator,
                                     _actionBindingContextAccessor);
             }
 

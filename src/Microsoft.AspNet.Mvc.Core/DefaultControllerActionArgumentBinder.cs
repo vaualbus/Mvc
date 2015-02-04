@@ -81,13 +81,13 @@ namespace Microsoft.AspNet.Mvc
             IEnumerable<ModelMetadata> parameterMetadata)
         {
             var operationBindingContext = new OperationBindingContext
-			{
-				ModelBinder = bindingContext.ModelBinder,
-				ValidatorProvider = bindingContext.ValidatorProvider,
-				MetadataProvider = _modelMetadataProvider,
-				HttpContext = actionContext.HttpContext,
-				ValueProvider = bindingContext.ValueProvider,
-			};
+            {
+                ModelBinder = bindingContext.ModelBinder,
+                ValidatorProvider = bindingContext.ValidatorProvider,
+                MetadataProvider = _modelMetadataProvider,
+                HttpContext = actionContext.HttpContext,
+                ValueProvider = bindingContext.ValueProvider,
+            };
 
             var modelState = actionContext.ModelState;
             modelState.MaxAllowedErrors = _options.MaxModelValidationErrors;

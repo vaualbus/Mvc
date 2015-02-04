@@ -14,24 +14,15 @@ namespace ModelBindingWebSite.Controllers
             return ModelState.IsValid;
         }
 
-        public bool Something(Company1 f)
-        {
+		public bool AvoidRecursive(SelfishPerson selfishPerson)
+		{
             return ModelState.IsValid;
-        }
+		}
+	}
 
-    }
-
-    public class Company1
-    {
-        public int Bar { get; set; }
-
-        public Department1 Department { get; set; }
-    }
-
-    public class  Department1
-    {
-        public string Name { get; set; }
-
-        public string Location { get; set; }
-    }
+	public class SelfishPerson
+	{
+		public string Name { get; set; }
+		public SelfishPerson MySelf { get { return this; } }
+	}
 }
