@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Globalization;
 using System.Text;
 using Microsoft.AspNet.Razor.Runtime.TagHelpers;
@@ -84,7 +83,7 @@ namespace Microsoft.AspNet.Mvc.TagHelpers
             {
                 content.AppendFormat(CultureInfo.InvariantCulture, "{0}=\"{1}\" ", attribute.Key, attribute.Value);
             }
-            content.AppendLine("/>");
+            content.Append("/>");
 
             // Build the <meta /> tag that's used to test for the presence of the stylesheet
             content.AppendLine(string.Format(CultureInfo.InvariantCulture, FallbackTestMetaTemplate, FallbackTestClass));

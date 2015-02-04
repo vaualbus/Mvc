@@ -1,0 +1,26 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Script</title>
+	<script src="/blank.js" data-foo="foo-data">
+		// Regular script with comment in body, and extra properties.
+	</script>
+
+	<script src="/blank.js" data-foo="foo-data">
+		// TagHelper script with comment in body, and extra properties.
+	</script>
+	<script>blank.wooptido() || document.Write("<script> src=\"/fallback.js\" data-foo=\"foo-data\" ><\/script>");</script>
+
+	<script data-foo="foo-data">
+		// Invalid TagHelper script with comment in body, and extra properties.
+	</script>
+
+	<script src="/blank.js">
+		// Invalid TagHelper script with comment in body.
+	</script>
+</head>
+<body>
+	<h2>Script tag helper test</h2>
+</body>
+</html>
